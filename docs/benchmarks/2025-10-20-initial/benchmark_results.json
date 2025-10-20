@@ -1,0 +1,130 @@
+{
+  "throughput": [
+    {
+      "protocol": "UDP",
+      "frame_size": 64,
+      "duration": 30,
+      "bits_per_second": 477001007.49372,
+      "mbps": 477.00100749372,
+      "jitter_ms": 0.0005019869560269362,
+      "lost_packets": 1001689,
+      "lost_percent": 3.583930733239421,
+      "packets": 27949452
+    },
+    {
+      "protocol": "UDP",
+      "frame_size": 128,
+      "duration": 30,
+      "bits_per_second": 659727531.7681427,
+      "mbps": 659.7275317681427,
+      "jitter_ms": 0.0011516324960049837,
+      "lost_packets": 668468,
+      "lost_percent": 3.458534480755995,
+      "packets": 19328071
+    },
+    {
+      "protocol": "UDP",
+      "frame_size": 256,
+      "duration": 30,
+      "bits_per_second": 794991340.41949,
+      "mbps": 794.99134041949,
+      "jitter_ms": 0.000994043021376282,
+      "lost_packets": 126165,
+      "lost_percent": 1.083384311746766,
+      "packets": 11645452
+    },
+    {
+      "protocol": "UDP",
+      "frame_size": 512,
+      "duration": 30,
+      "bits_per_second": 885768548.4351877,
+      "mbps": 885.7685484351877,
+      "jitter_ms": 0.000826234842367019,
+      "lost_packets": 310902,
+      "lost_percent": 4.792227670196975,
+      "packets": 6487630
+    },
+    {
+      "protocol": "UDP",
+      "frame_size": 1024,
+      "duration": 30,
+      "bits_per_second": 939399946.3204938,
+      "mbps": 939.3999463204938,
+      "jitter_ms": 0.019829129638154083,
+      "lost_packets": 171387,
+      "lost_percent": 4.981864521376262,
+      "packets": 3440218
+    },
+    {
+      "protocol": "UDP",
+      "frame_size": 1518,
+      "duration": 30,
+      "bits_per_second": 924432608.1171796,
+      "mbps": 924.4326081171796,
+      "jitter_ms": 0.024691131103839394,
+      "lost_packets": 67538,
+      "lost_percent": 2.957392408200548,
+      "packets": 2283701
+    }
+  ],
+  "latency": [
+    {
+      "msg_size": 64,
+      "avg_latency_us": 60.521,
+      "percentile_99_us": 99.0
+    },
+    {
+      "msg_size": 256,
+      "avg_latency_us": 77.768,
+      "percentile_99_us": 99.0
+    },
+    {
+      "msg_size": 512,
+      "avg_latency_us": 88.718,
+      "percentile_99_us": 99.0
+    },
+    {
+      "msg_size": 1024,
+      "avg_latency_us": 104.317,
+      "percentile_99_us": 99.0
+    },
+    {
+      "msg_size": 1518,
+      "avg_latency_us": 110.42,
+      "percentile_99_us": 99.0
+    }
+  ],
+  "frame_loss": [],
+  "tcp_performance": [
+    {
+      "protocol": "TCP",
+      "duration": 10,
+      "bits_per_second": 941277305.2726535,
+      "mbps": 941.2773052726535,
+      "retransmits": 0,
+      "jitter_ms": 0,
+      "lost_packets": 0,
+      "lost_percent": 0
+    },
+    {
+      "protocol": "TCP",
+      "duration": 30,
+      "bits_per_second": 941397469.905067,
+      "mbps": 941.3974699050669,
+      "retransmits": 0,
+      "jitter_ms": 0,
+      "lost_packets": 0,
+      "lost_percent": 0
+    },
+    {
+      "protocol": "TCP",
+      "duration": 60,
+      "bits_per_second": 941426900.7610067,
+      "mbps": 941.4269007610067,
+      "retransmits": 0,
+      "jitter_ms": 0,
+      "lost_packets": 0,
+      "lost_percent": 0
+    }
+  ]
+}

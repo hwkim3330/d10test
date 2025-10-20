@@ -1,0 +1,483 @@
+{
+  "throughput_zero_loss": [
+    {
+      "frame_size": 64,
+      "target_mbps": 20.51171875,
+      "actual_mbps": 20.510978502458364,
+      "jitter_ms": 0.00155173295110068,
+      "lost_packets": 0,
+      "lost_percent": 0,
+      "packets": 1201824,
+      "duration": 30
+    },
+    {
+      "frame_size": 128,
+      "target_mbps": 40.9990234375,
+      "actual_mbps": 40.9975532492372,
+      "jitter_ms": 0.0016465407098011356,
+      "lost_packets": 0,
+      "lost_percent": 0,
+      "packets": 1201108,
+      "duration": 30
+    },
+    {
+      "frame_size": 256,
+      "target_mbps": 86.8515625,
+      "actual_mbps": 86.848486145447,
+      "jitter_ms": 0.0016116121045658609,
+      "lost_packets": 0,
+      "lost_percent": 0,
+      "packets": 1272202,
+      "duration": 30
+    },
+    {
+      "frame_size": 512,
+      "target_mbps": 161.9716796875,
+      "actual_mbps": 161.9659328032676,
+      "jitter_ms": 0.0015494534821215316,
+      "lost_packets": 0,
+      "lost_percent": 0,
+      "packets": 1186281,
+      "duration": 30
+    },
+    {
+      "frame_size": 1024,
+      "target_mbps": 312.2119140625,
+      "actual_mbps": 312.20084341530503,
+      "jitter_ms": 0.0015941697138816106,
+      "lost_packets": 0,
+      "lost_percent": 0,
+      "packets": 1143320,
+      "duration": 30
+    },
+    {
+      "frame_size": 1518,
+      "target_mbps": 341.4794921875,
+      "actual_mbps": 341.467470709954,
+      "jitter_ms": 0.0016784154911757717,
+      "lost_packets": 4,
+      "lost_percent": 0.0004741853495694397,
+      "packets": 843552,
+      "duration": 30
+    }
+  ],
+  "throughput_max_attempt": [],
+  "latency_detailed": [
+    {
+      "msg_size": 64,
+      "avg_latency_us": 53.252,
+      "min_latency_us": 26.626,
+      "max_latency_us": 106.504,
+      "stddev_us": 5.325200000000001,
+      "p50_us": 47.571,
+      "p90_us": 62.301,
+      "p99_us": 121.179,
+      "p99_9_us": 178.144,
+      "samples": 0
+    },
+    {
+      "msg_size": 256,
+      "avg_latency_us": 62.51,
+      "min_latency_us": 31.255,
+      "max_latency_us": 125.02,
+      "stddev_us": 6.251,
+      "p50_us": 53.8,
+      "p90_us": 98.291,
+      "p99_us": 127.635,
+      "p99_9_us": 194.48,
+      "samples": 0
+    },
+    {
+      "msg_size": 512,
+      "avg_latency_us": 83.576,
+      "min_latency_us": 41.788,
+      "max_latency_us": 167.152,
+      "stddev_us": 8.3576,
+      "p50_us": 73.129,
+      "p90_us": 123.839,
+      "p99_us": 145.508,
+      "p99_9_us": 225.292,
+      "samples": 0
+    },
+    {
+      "msg_size": 1024,
+      "avg_latency_us": 105.22,
+      "min_latency_us": 52.61,
+      "max_latency_us": 210.44,
+      "stddev_us": 10.522,
+      "p50_us": 106.079,
+      "p90_us": 134.499,
+      "p99_us": 159.118,
+      "p99_9_us": 238.268,
+      "samples": 0
+    },
+    {
+      "msg_size": 1518,
+      "avg_latency_us": 109.345,
+      "min_latency_us": 54.6725,
+      "max_latency_us": 218.69,
+      "stddev_us": 10.9345,
+      "p50_us": 105.098,
+      "p90_us": 116.643,
+      "p99_us": 180.271,
+      "p99_9_us": 262.143,
+      "samples": 0
+    }
+  ],
+  "latency_distribution": [],
+  "frame_loss_curve": [
+    {
+      "frame_size": 64,
+      "load_percent": 50,
+      "target_mbps": 313.72549019607845,
+      "actual_mbps": 313.71980784732426,
+      "lost_percent": 17.194553815733343,
+      "jitter_ms": 0.0021381028943564247,
+      "packets_sent": 6127446,
+      "packets_lost": 1053587
+    },
+    {
+      "frame_size": 64,
+      "load_percent": 60,
+      "target_mbps": 376.47058823529414,
+      "actual_mbps": 376.43965513620776,
+      "lost_percent": 17.327601777460547,
+      "jitter_ms": 0.0004216787120872622,
+      "packets_sent": 7352512,
+      "packets_lost": 1274014
+    },
+    {
+      "frame_size": 64,
+      "load_percent": 70,
+      "target_mbps": 439.21568627450984,
+      "actual_mbps": 439.1964539817007,
+      "lost_percent": 22.870775412804893,
+      "jitter_ms": 0.000790205977732258,
+      "packets_sent": 8578205,
+      "packets_lost": 1961902
+    },
+    {
+      "frame_size": 64,
+      "load_percent": 80,
+      "target_mbps": 501.9607843137255,
+      "actual_mbps": 478.053904997367,
+      "lost_percent": 4.550728679500542,
+      "jitter_ms": 0.0003898105296133907,
+      "packets_sent": 9337164,
+      "packets_lost": 424909
+    },
+    {
+      "frame_size": 64,
+      "load_percent": 90,
+      "target_mbps": 564.7058823529412,
+      "actual_mbps": 476.61876384787985,
+      "lost_percent": 4.679945752151786,
+      "jitter_ms": 0.00026899759524782416,
+      "packets_sent": 9309125,
+      "packets_lost": 435662
+    },
+    {
+      "frame_size": 64,
+      "load_percent": 95,
+      "target_mbps": 596.0784313725491,
+      "actual_mbps": 478.0482733745253,
+      "lost_percent": 6.957783194674115,
+      "jitter_ms": 0.00046994429018687076,
+      "packets_sent": 9337040,
+      "packets_lost": 649651
+    },
+    {
+      "frame_size": 64,
+      "load_percent": 98,
+      "target_mbps": 614.9019607843138,
+      "actual_mbps": 470.7718111329105,
+      "lost_percent": 15.444250631402868,
+      "jitter_ms": 0.000552283162557117,
+      "packets_sent": 9195001,
+      "packets_lost": 1420099
+    },
+    {
+      "frame_size": 64,
+      "load_percent": 100,
+      "target_mbps": 627.4509803921569,
+      "actual_mbps": 480.19989430343514,
+      "lost_percent": 4.41455137634741,
+      "jitter_ms": 0.0005020476416735566,
+      "packets_sent": 9379209,
+      "packets_lost": 414050
+    },
+    {
+      "frame_size": 64,
+      "load_percent": 102,
+      "target_mbps": 640.0,
+      "actual_mbps": 479.1554486423093,
+      "lost_percent": 3.8091800501928312,
+      "jitter_ms": 0.00038527238501918264,
+      "packets_sent": 9358707,
+      "packets_lost": 356490
+    },
+    {
+      "frame_size": 64,
+      "load_percent": 105,
+      "target_mbps": 658.8235294117648,
+      "actual_mbps": 479.1996897662667,
+      "lost_percent": 5.340444495349033,
+      "jitter_ms": 0.00024734578801783344,
+      "packets_sent": 9359558,
+      "packets_lost": 499842
+    },
+    {
+      "frame_size": 64,
+      "load_percent": 110,
+      "target_mbps": 690.1960784313726,
+      "actual_mbps": 475.28035323487813,
+      "lost_percent": 5.481143179207826,
+      "jitter_ms": 0.00037935245467957785,
+      "packets_sent": 9282954,
+      "packets_lost": 508812
+    },
+    {
+      "frame_size": 512,
+      "load_percent": 50,
+      "target_mbps": 465.45454545454544,
+      "actual_mbps": 465.4062881117225,
+      "lost_percent": 3.1981863449588084,
+      "jitter_ms": 0.0015246848372381765,
+      "packets_sent": 1136269,
+      "packets_lost": 36340
+    },
+    {
+      "frame_size": 512,
+      "load_percent": 60,
+      "target_mbps": 558.5454545454545,
+      "actual_mbps": 558.4912205790574,
+      "lost_percent": 3.7008516168398944,
+      "jitter_ms": 0.002130271696335893,
+      "packets_sent": 1363524,
+      "packets_lost": 50462
+    },
+    {
+      "frame_size": 512,
+      "load_percent": 70,
+      "target_mbps": 651.6363636363636,
+      "actual_mbps": 651.5732491108156,
+      "lost_percent": 4.520666866568225,
+      "jitter_ms": 0.001568181656110259,
+      "packets_sent": 1590783,
+      "packets_lost": 71914
+    },
+    {
+      "frame_size": 512,
+      "load_percent": 80,
+      "target_mbps": 744.7272727272727,
+      "actual_mbps": 744.6600250515539,
+      "lost_percent": 4.856412089876516,
+      "jitter_ms": 0.0014097566534067114,
+      "packets_sent": 1818050,
+      "packets_lost": 88292
+    },
+    {
+      "frame_size": 512,
+      "load_percent": 90,
+      "target_mbps": 837.8181818181818,
+      "actual_mbps": 837.740722181795,
+      "lost_percent": 4.429472449029483,
+      "jitter_ms": 0.0015084197327800294,
+      "packets_sent": 2045300,
+      "packets_lost": 90596
+    },
+    {
+      "frame_size": 512,
+      "load_percent": 95,
+      "target_mbps": 884.3636363636363,
+      "actual_mbps": 884.318935128279,
+      "lost_percent": 4.805718488656027,
+      "jitter_ms": 0.02716900666837234,
+      "packets_sent": 2159032,
+      "packets_lost": 103757
+    },
+    {
+      "frame_size": 512,
+      "load_percent": 98,
+      "target_mbps": 912.290909090909,
+      "actual_mbps": 885.7420855320328,
+      "lost_percent": 3.9716403230139834,
+      "jitter_ms": 0.022076746076686214,
+      "packets_sent": 2162507,
+      "packets_lost": 85887
+    },
+    {
+      "frame_size": 512,
+      "load_percent": 100,
+      "target_mbps": 930.9090909090909,
+      "actual_mbps": 885.7354430901252,
+      "lost_percent": 3.5288340017729487,
+      "jitter_ms": 0.02555619655015557,
+      "packets_sent": 2162499,
+      "packets_lost": 76311
+    },
+    {
+      "frame_size": 512,
+      "load_percent": 102,
+      "target_mbps": 949.5272727272727,
+      "actual_mbps": 885.7300851686749,
+      "lost_percent": 4.375517633169586,
+      "jitter_ms": 0.01488947429039951,
+      "packets_sent": 2162487,
+      "packets_lost": 94620
+    },
+    {
+      "frame_size": 512,
+      "load_percent": 105,
+      "target_mbps": 977.4545454545455,
+      "actual_mbps": 885.746425589697,
+      "lost_percent": 5.44419298721021,
+      "jitter_ms": 0.01115942788441097,
+      "packets_sent": 2162506,
+      "packets_lost": 117731
+    },
+    {
+      "frame_size": 512,
+      "load_percent": 110,
+      "target_mbps": 1024.0,
+      "actual_mbps": 885.748683972899,
+      "lost_percent": 4.650383119615632,
+      "jitter_ms": 0.005878843178184438,
+      "packets_sent": 2162510,
+      "packets_lost": 100565
+    },
+    {
+      "frame_size": 1518,
+      "load_percent": 50,
+      "target_mbps": 487.7892030848329,
+      "actual_mbps": 487.7394324113518,
+      "lost_percent": 0.1944537120491587,
+      "jitter_ms": 0.00482772896512661,
+      "packets_sent": 401638,
+      "packets_lost": 781
+    },
+    {
+      "frame_size": 1518,
+      "load_percent": 60,
+      "target_mbps": 585.3470437017994,
+      "actual_mbps": 585.28672202502,
+      "lost_percent": 1.1590077267181782,
+      "jitter_ms": 0.006051928360655855,
+      "packets_sent": 481964,
+      "packets_lost": 5586
+    },
+    {
+      "frame_size": 1518,
+      "load_percent": 70,
+      "target_mbps": 682.904884318766,
+      "actual_mbps": 682.8360697212427,
+      "lost_percent": 1.7240152803169884,
+      "jitter_ms": 0.00569664972597966,
+      "packets_sent": 562292,
+      "packets_lost": 9694
+    },
+    {
+      "frame_size": 1518,
+      "load_percent": 80,
+      "target_mbps": 780.4627249357327,
+      "actual_mbps": 780.3834469829201,
+      "lost_percent": 2.654134636332514,
+      "jitter_ms": 0.005280063035124674,
+      "packets_sent": 642620,
+      "packets_lost": 17056
+    },
+    {
+      "frame_size": 1518,
+      "load_percent": 90,
+      "target_mbps": 878.0205655526992,
+      "actual_mbps": 877.9304047988635,
+      "lost_percent": 2.8025528807051128,
+      "jitter_ms": 0.014369136113154836,
+      "packets_sent": 722948,
+      "packets_lost": 20261
+    },
+    {
+      "frame_size": 1518,
+      "load_percent": 95,
+      "target_mbps": 926.7994858611825,
+      "actual_mbps": 924.3646945943716,
+      "lost_percent": 2.5609967576998063,
+      "jitter_ms": 0.03627904915701597,
+      "packets_sent": 761188,
+      "packets_lost": 19494
+    },
+    {
+      "frame_size": 1518,
+      "load_percent": 98,
+      "target_mbps": 956.0668380462724,
+      "actual_mbps": 924.4113536111818,
+      "lost_percent": 3.1747303705844487,
+      "jitter_ms": 0.03303762516061453,
+      "packets_sent": 761230,
+      "packets_lost": 24167
+    },
+    {
+      "frame_size": 1518,
+      "load_percent": 100,
+      "target_mbps": 975.5784061696658,
+      "actual_mbps": 924.40243258551,
+      "lost_percent": 3.36684103633913,
+      "jitter_ms": 0.010602961375976034,
+      "packets_sent": 761218,
+      "packets_lost": 25629
+    },
+    {
+      "frame_size": 1518,
+      "load_percent": 102,
+      "target_mbps": 995.0899742930591,
+      "actual_mbps": 924.4172785391817,
+      "lost_percent": 3.410891206166797,
+      "jitter_ms": 0.03298521544010832,
+      "packets_sent": 761238,
+      "packets_lost": 25965
+    },
+    {
+      "frame_size": 1518,
+      "load_percent": 105,
+      "target_mbps": 1024.3573264781492,
+      "actual_mbps": 924.4160680048969,
+      "lost_percent": 3.038503474639728,
+      "jitter_ms": 0.015939169766997514,
+      "packets_sent": 761230,
+      "packets_lost": 23130
+    },
+    {
+      "frame_size": 1518,
+      "load_percent": 110,
+      "target_mbps": 1073.1362467866325,
+      "actual_mbps": 924.3916881045241,
+      "lost_percent": 3.1870311740518384,
+      "jitter_ms": 0.020114875618125642,
+      "packets_sent": 761210,
+      "packets_lost": 24260
+    }
+  ],
+  "tcp_performance": [
+    {
+      "protocol": "TCP",
+      "duration": 10,
+      "bits_per_second": 941296785.859859,
+      "mbps": 941.296785859859,
+      "retransmits": 0
+    },
+    {
+      "protocol": "TCP",
+      "duration": 30,
+      "bits_per_second": 941414748.987601,
+      "mbps": 941.414748987601,
+      "retransmits": 0
+    },
+    {
+      "protocol": "TCP",
+      "duration": 60,
+      "bits_per_second": 941417081.7398137,
+      "mbps": 941.4170817398137,
+      "retransmits": 0
+    }
+  ]
+}

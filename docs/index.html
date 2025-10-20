@@ -148,10 +148,17 @@
             padding-bottom: 10px;
         }
 
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
         table {
             width: 100%;
+            min-width: 600px;
             border-collapse: collapse;
-            margin-top: 20px;
         }
 
         thead {
@@ -329,9 +336,10 @@
     <header>
         <div class="container">
             <h1>📊 RFC 2544 Network Benchmark Dashboard</h1>
-            <p>IETF Standard Compliant Performance Testing Results</p>
+            <p>IETF Standard Compliant Performance Testing in IEEE 802.1CB FRER Environment</p>
             <div>
                 <span class="badge badge-success">✓ RFC 2544 Compliant</span>
+                <span class="badge badge-success">✓ IEEE 802.1CB FRER</span>
                 <span class="badge badge-primary">Target: 10.0.100.2</span>
                 <span class="badge badge-primary">1 Gigabit Ethernet</span>
                 <span class="badge badge-success">Test Date: 2025-10-20</span>
@@ -374,6 +382,7 @@
                 <span class="status status-success"></span>
                 바이너리 서치 방법론으로 측정 | 손실률 기준: &lt; 0.001% (RFC 2544 권장)
             </p>
+            <div class="table-container">
             <table>
                 <thead>
                     <tr>
@@ -429,6 +438,7 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
         </section>
 
         <!-- Latency Performance -->
@@ -438,6 +448,7 @@
                 <span class="status status-success"></span>
                 Ping-Pong 방식 양방향 RTT 측정 | 시험 시간: 60초/메시지 크기
             </p>
+            <div class="table-container">
             <table>
                 <thead>
                     <tr>
@@ -492,6 +503,7 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
         </section>
 
         <!-- Performance Charts -->
@@ -500,21 +512,21 @@
             <div class="charts-grid">
                 <div class="chart-card">
                     <h3>처리량 분석 (Throughput Analysis)</h3>
-                    <img src="../benchmarks/2025-10-20-enhanced/01_throughput_analysis.png" alt="Throughput Analysis">
+                    <img src="benchmarks/2025-10-20-enhanced/01_throughput_analysis.png" alt="Throughput Analysis" loading="lazy">
                     <p style="color: var(--text-secondary); margin-top: 10px; font-size: 0.9rem;">
                         무손실 처리량, TCP 성능, 지터, 네트워크 효율
                     </p>
                 </div>
                 <div class="chart-card">
                     <h3>지연시간 분석 (Latency Analysis)</h3>
-                    <img src="../benchmarks/2025-10-20-enhanced/02_latency_analysis.png" alt="Latency Analysis">
+                    <img src="benchmarks/2025-10-20-enhanced/02_latency_analysis.png" alt="Latency Analysis" loading="lazy">
                     <p style="color: var(--text-secondary); margin-top: 10px; font-size: 0.9rem;">
                         평균/백분위수, Min-Max 범위, 분포 히스토그램
                     </p>
                 </div>
                 <div class="chart-card">
                     <h3>프레임 손실 분석 (Frame Loss Analysis)</h3>
-                    <img src="../benchmarks/2025-10-20-enhanced/03_frame_loss_analysis.png" alt="Frame Loss Analysis">
+                    <img src="benchmarks/2025-10-20-enhanced/03_frame_loss_analysis.png" alt="Frame Loss Analysis" loading="lazy">
                     <p style="color: var(--text-secondary); margin-top: 10px; font-size: 0.9rem;">
                         네트워크 부하별 손실률, 포화 지점 분석
                     </p>
@@ -525,6 +537,7 @@
         <!-- RFC 2544 Compliance -->
         <section class="section">
             <h2>✅ RFC 2544 표준 준수 (Standards Compliance)</h2>
+            <div class="table-container">
             <table>
                 <thead>
                     <tr>
@@ -561,27 +574,36 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
         </section>
 
         <!-- Reports & Documentation -->
         <section class="section">
             <h2>📄 보고서 및 문서 (Reports & Documentation)</h2>
             <div class="links-grid">
-                <a href="../benchmarks/2025-10-20-enhanced/RFC2544_Enhanced_Report.md" class="link-card">
+                <a href="benchmarks/2025-10-20-enhanced/RFC2544_Enhanced_Report.md" class="link-card" target="_blank">
                     <h4>📘 English Report</h4>
                     <p>RFC 2544 Enhanced Benchmark Report - Comprehensive analysis with detailed metrics</p>
                 </a>
-                <a href="../benchmarks/2025-10-20-enhanced/RFC2544_한국어_보고서.md" class="link-card">
+                <a href="benchmarks/2025-10-20-enhanced/RFC2544_한국어_보고서.md" class="link-card" target="_blank">
                     <h4>📗 한국어 보고서</h4>
                     <p>RFC 2544 벤치마크 보고서 - 완전한 한국어 보고서</p>
                 </a>
-                <a href="../RFC2544_표준_정보.md" class="link-card">
+                <a href="https://github.com/hwkim3330/d10test/blob/main/RFC2544_표준_정보.md" class="link-card" target="_blank">
                     <h4>📚 RFC 2544 표준 정보</h4>
                     <p>IETF 표준 상세 설명, Ethernet 프레임 구조, 바이너리 서치 알고리즘</p>
                 </a>
-                <a href="../benchmarks/2025-10-20-enhanced/benchmark_results_enhanced.json" class="link-card">
+                <a href="benchmarks/2025-10-20-enhanced/benchmark_results_enhanced.json" class="link-card" target="_blank">
                     <h4>💾 Raw Data (JSON)</h4>
                     <p>Complete benchmark results in JSON format</p>
+                </a>
+                <a href="https://github.com/hwkim3330/d10test/blob/main/FRER_Test_Environment.md" class="link-card" target="_blank">
+                    <h4>🔧 FRER Test Environment</h4>
+                    <p>IEEE 802.1CB FRER network topology and specifications</p>
+                </a>
+                <a href="https://github.com/hwkim3330/d10test/blob/main/IEEE_802.1CB_FRER_Guide.md" class="link-card" target="_blank">
+                    <h4>📖 IEEE 802.1CB FRER Guide</h4>
+                    <p>Complete guide to Frame Replication and Elimination for Reliability</p>
                 </a>
             </div>
         </section>
