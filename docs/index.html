@@ -13,11 +13,13 @@
             --success-color: #10b981;
             --warning-color: #f59e0b;
             --danger-color: #ef4444;
-            --dark-bg: #0f172a;
-            --card-bg: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --border-color: #334155;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-color: rgba(0, 0, 0, 0.08);
         }
 
         * {
@@ -28,7 +30,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
@@ -42,12 +44,12 @@
 
         /* Header */
         header {
-            background: rgba(30, 41, 59, 0.8);
+            background: #ffffff;
             backdrop-filter: blur(10px);
             border-bottom: 2px solid var(--primary-color);
             padding: 30px 0;
             margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 12px var(--shadow-color);
         }
 
         header h1 {
@@ -98,7 +100,7 @@
             border-radius: 16px;
             padding: 25px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px var(--shadow-color);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
@@ -137,7 +139,7 @@
             padding: 30px;
             margin-bottom: 30px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px var(--shadow-color);
         }
 
         .section h2 {
@@ -201,7 +203,7 @@
             border-radius: 16px;
             padding: 25px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px var(--shadow-color);
         }
 
         .chart-card h3 {
@@ -372,6 +374,124 @@
                     <div class="stat-value">0</div>
                     <div class="stat-label">건 (모든 테스트)</div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Network Topology -->
+        <section class="section">
+            <h2>🌐 네트워크 토폴로지 (Network Topology)</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                IEEE 802.1CB FRER 구성 - 이중 스위치 리던던시 아키텍처
+            </p>
+            <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 40px; border-radius: 12px; margin: 20px 0;">
+                <svg viewBox="0 0 800 600" style="width: 100%; max-width: 800px; margin: 0 auto; display: block;">
+                    <!-- Talker Node -->
+                    <rect x="350" y="20" width="100" height="80" rx="8" fill="#2563eb" stroke="#1e40af" stroke-width="2"/>
+                    <text x="400" y="50" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Talker</text>
+                    <text x="400" y="70" text-anchor="middle" fill="white" font-size="11">10.0.100.1</text>
+                    <text x="400" y="88" text-anchor="middle" fill="white" font-size="10">enp2s0</text>
+
+                    <!-- Connection from Talker -->
+                    <line x1="400" y1="100" x2="400" y2="150" stroke="#1e40af" stroke-width="3"/>
+                    <line x1="400" y1="150" x2="200" y2="200" stroke="#1e40af" stroke-width="3" stroke-dasharray="5,5"/>
+                    <line x1="400" y1="150" x2="600" y2="200" stroke="#1e40af" stroke-width="3" stroke-dasharray="5,5"/>
+
+                    <!-- Switch A -->
+                    <rect x="120" y="200" width="160" height="120" rx="8" fill="#7c3aed" stroke="#6d28d9" stroke-width="2"/>
+                    <text x="200" y="230" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Switch A</text>
+                    <text x="200" y="250" text-anchor="middle" fill="white" font-size="11">(FRER Node)</text>
+
+                    <!-- Switch A Ports -->
+                    <circle cx="150" cy="280" r="8" fill="#10b981" stroke="white" stroke-width="2"/>
+                    <text x="165" y="285" fill="white" font-size="10">Port 4 ← Talker</text>
+
+                    <circle cx="150" cy="300" r="8" fill="#10b981" stroke="white" stroke-width="2"/>
+                    <text x="165" y="305" fill="white" font-size="10">Port 1,2 ↔ SW B</text>
+
+                    <circle cx="220" cy="280" r="8" fill="#f59e0b" stroke="white" stroke-width="2"/>
+                    <text x="235" y="285" fill="white" font-size="10">Port 6 (Mgmt)</text>
+
+                    <!-- Switch B -->
+                    <rect x="520" y="200" width="160" height="120" rx="8" fill="#7c3aed" stroke="#6d28d9" stroke-width="2"/>
+                    <text x="600" y="230" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Switch B</text>
+                    <text x="600" y="250" text-anchor="middle" fill="white" font-size="11">(FRER Node)</text>
+
+                    <!-- Switch B Ports -->
+                    <circle cx="550" cy="280" r="8" fill="#10b981" stroke="white" stroke-width="2"/>
+                    <text x="565" y="285" fill="white" font-size="10">Port 4 → Listener</text>
+
+                    <circle cx="550" cy="300" r="8" fill="#10b981" stroke="white" stroke-width="2"/>
+                    <text x="565" y="305" fill="white" font-size="10">Port 1,2 ↔ SW A</text>
+
+                    <circle cx="620" cy="280" r="8" fill="#f59e0b" stroke="white" stroke-width="2"/>
+                    <text x="635" y="285" fill="white" font-size="10">Port 6 (Mgmt)</text>
+
+                    <!-- Inter-switch connection -->
+                    <path d="M 280 260 Q 400 240 520 260" stroke="#10b981" stroke-width="4" fill="none"/>
+                    <text x="400" y="235" text-anchor="middle" fill="#059669" font-size="11" font-weight="bold">Port 1,2 ↔ Port 1,2</text>
+
+                    <!-- Connections to Listener -->
+                    <line x1="200" y1="320" x2="200" y2="400" stroke="#6d28d9" stroke-width="3" stroke-dasharray="5,5"/>
+                    <line x1="600" y1="320" x2="600" y2="400" stroke="#6d28d9" stroke-width="3" stroke-dasharray="5,5"/>
+                    <line x1="200" y1="400" x2="400" y2="450" stroke="#6d28d9" stroke-width="3" stroke-dasharray="5,5"/>
+                    <line x1="600" y1="400" x2="400" y2="450" stroke="#6d28d9" stroke-width="3" stroke-dasharray="5,5"/>
+
+                    <!-- Listener Node -->
+                    <rect x="350" y="450" width="100" height="80" rx="8" fill="#10b981" stroke="#059669" stroke-width="2"/>
+                    <text x="400" y="480" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Listener</text>
+                    <text x="400" y="500" text-anchor="middle" fill="white" font-size="11">10.0.100.2</text>
+                    <text x="400" y="518" text-anchor="middle" fill="white" font-size="9">enx00051b5103bf</text>
+
+                    <!-- FRER Labels -->
+                    <text x="400" y="175" text-anchor="middle" fill="#1e40af" font-size="12" font-weight="bold">▼ Frame Replication</text>
+                    <text x="400" y="435" text-anchor="middle" fill="#059669" font-size="12" font-weight="bold">▲ Frame Elimination</text>
+
+                    <!-- Legend -->
+                    <rect x="20" y="20" width="100" height="80" rx="5" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+                    <text x="70" y="35" text-anchor="middle" fill="#1e293b" font-size="11" font-weight="bold">Legend</text>
+                    <circle cx="30" cy="50" r="5" fill="#10b981"/>
+                    <text x="40" y="54" fill="#64748b" font-size="9">Active Port</text>
+                    <circle cx="30" cy="68" r="5" fill="#f59e0b"/>
+                    <text x="40" y="72" fill="#64748b" font-size="9">Management</text>
+                    <line x1="30" y1="85" x2="60" y2="85" stroke="#1e40af" stroke-width="2" stroke-dasharray="3,3"/>
+                    <text x="65" y="88" fill="#64748b" font-size="9">Data Path</text>
+                </svg>
+            </div>
+
+            <!-- Port Configuration Table -->
+            <h3 style="margin-top: 30px; color: var(--text-primary);">포트 구성 상세 (Port Configuration)</h3>
+            <div class="table-container">
+                <table style="min-width: 600px;">
+                    <thead>
+                        <tr>
+                            <th>Device</th>
+                            <th>Port 1,2</th>
+                            <th>Port 4</th>
+                            <th>Port 6</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Switch A</strong></td>
+                            <td>↔ Switch B (Inter-switch Link)</td>
+                            <td>← Talker (10.0.100.1)</td>
+                            <td>Management Interface</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Switch B</strong></td>
+                            <td>↔ Switch A (Inter-switch Link)</td>
+                            <td>→ Listener (10.0.100.2)</td>
+                            <td>Management Interface</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="background: #f0fdf4; border-left: 4px solid #10b981; padding: 15px; margin-top: 20px; border-radius: 4px;">
+                <p style="margin: 0; color: #166534; font-size: 0.95rem;">
+                    <strong>✓ FRER 동작:</strong> Talker에서 생성된 프레임은 Switch A와 B를 통해 복제되어 전송되며,
+                    Listener에서 중복 제거 및 시퀀스 복구가 수행됩니다. 이를 통해 단일 경로 장애 시에도 무손실 전송이 보장됩니다.
+                </p>
             </div>
         </section>
 
