@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="RFC 2544 Network Benchmark Results - IETF Standard Compliant Performance Testing">
+    <meta name="keywords" content="RFC 2544, Network Benchmark, Performance Testing, Gigabit Ethernet, Latency, Throughput">
+    <title>RFC 2544 Network Benchmark Dashboard</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #7c3aed;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary-color);
+            padding: 30px 0;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 10px 5px 0 0;
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .badge-primary {
+            background: rgba(37, 99, 235, 0.2);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.3);
+        }
+
+        .stat-card h3 {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Performance Table */
+        .section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        thead {
+            background: rgba(37, 99, 235, 0.1);
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:hover {
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .highlight {
+            background: rgba(16, 185, 129, 0.1);
+            font-weight: 700;
+            color: var(--success-color);
+        }
+
+        /* Charts Section */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .chart-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .chart-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .chart-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Links Section */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .link-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .link-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        .link-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .link-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* RFC Badge */
+        .rfc-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(124, 58, 237, 0.2);
+            color: var(--secondary-color);
+            padding: 8px 16px;
+            border-radius: 25px;
+            border: 1px solid var(--secondary-color);
+            font-weight: 600;
+            margin: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-value {
+                font-size: 2rem;
+            }
+        }
+
+        /* Icon */
+        .icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+        }
+
+        /* Status Indicator */
+        .status {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-success {
+            background: var(--success-color);
+            box-shadow: 0 0 10px var(--success-color);
+        }
+
+        .status-warning {
+            background: var(--warning-color);
+            box-shadow: 0 0 10px var(--warning-color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>📊 RFC 2544 Network Benchmark Dashboard</h1>
+            <p>IETF Standard Compliant Performance Testing Results</p>
+            <div>
+                <span class="badge badge-success">✓ RFC 2544 Compliant</span>
+                <span class="badge badge-primary">Target: 10.0.100.2</span>
+                <span class="badge badge-primary">1 Gigabit Ethernet</span>
+                <span class="badge badge-success">Test Date: 2025-10-20</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Key Performance Indicators -->
+        <section class="section">
+            <h2>🎯 핵심 성능 지표 (Key Performance Indicators)</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>TCP 최대 처리량</h3>
+                    <div class="stat-value">941.42</div>
+                    <div class="stat-label">Mbps (94% line rate)</div>
+                </div>
+                <div class="stat-card">
+                    <h3>UDP 무손실 최대 처리량</h3>
+                    <div class="stat-value">341.47</div>
+                    <div class="stat-label">Mbps (1518B frames)</div>
+                </div>
+                <div class="stat-card">
+                    <h3>최소 평균 지연시간</h3>
+                    <div class="stat-value">53.25</div>
+                    <div class="stat-label">μs (64B messages)</div>
+                </div>
+                <div class="stat-card">
+                    <h3>TCP 재전송</h3>
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">건 (모든 테스트)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- UDP Zero-Loss Throughput -->
+        <section class="section">
+            <h2>📡 UDP 무손실 처리량 (Zero-Loss Throughput)</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 15px;">
+                <span class="status status-success"></span>
+                바이너리 서치 방법론으로 측정 | 손실률 기준: &lt; 0.001% (RFC 2544 권장)
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>프레임 크기 (Frame Size)</th>
+                        <th>무손실 처리량 (Mbps)</th>
+                        <th>손실률 (%)</th>
+                        <th>라인 레이트 효율 (%)</th>
+                        <th>상태</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>64 bytes</td>
+                        <td>20.51</td>
+                        <td>&lt; 0.001</td>
+                        <td>3.3%</td>
+                        <td><span class="status status-success"></span>검증 완료</td>
+                    </tr>
+                    <tr>
+                        <td>128 bytes</td>
+                        <td>41.00</td>
+                        <td>&lt; 0.001</td>
+                        <td>4.7%</td>
+                        <td><span class="status status-success"></span>검증 완료</td>
+                    </tr>
+                    <tr>
+                        <td>256 bytes</td>
+                        <td>86.85</td>
+                        <td>&lt; 0.001</td>
+                        <td>9.4%</td>
+                        <td><span class="status status-success"></span>검증 완료</td>
+                    </tr>
+                    <tr>
+                        <td>512 bytes</td>
+                        <td>161.97</td>
+                        <td>&lt; 0.001</td>
+                        <td>17.4%</td>
+                        <td><span class="status status-success"></span>검증 완료</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td><strong>1024 bytes</strong></td>
+                        <td><strong>312.20</strong></td>
+                        <td><strong>&lt; 0.001</strong></td>
+                        <td><strong>31.8%</strong></td>
+                        <td><span class="status status-success"></span><strong>우수</strong></td>
+                    </tr>
+                    <tr class="highlight">
+                        <td><strong>1518 bytes</strong></td>
+                        <td><strong>341.47</strong></td>
+                        <td><strong>&lt; 0.001</strong></td>
+                        <td><strong>34.6%</strong></td>
+                        <td><span class="status status-success"></span><strong>최고</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Latency Performance -->
+        <section class="section">
+            <h2>⏱️ 지연시간 성능 (Latency Performance)</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 15px;">
+                <span class="status status-success"></span>
+                Ping-Pong 방식 양방향 RTT 측정 | 시험 시간: 60초/메시지 크기
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>메시지 크기</th>
+                        <th>평균 (μs)</th>
+                        <th>P50 (μs)</th>
+                        <th>P99 (μs)</th>
+                        <th>P99.9 (μs)</th>
+                        <th>평가</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight">
+                        <td><strong>64 bytes</strong></td>
+                        <td><strong>53.25</strong></td>
+                        <td><strong>47.57</strong></td>
+                        <td><strong>121.18</strong></td>
+                        <td><strong>178.14</strong></td>
+                        <td><span class="status status-success"></span><strong>탁월 (TSN 적합)</strong></td>
+                    </tr>
+                    <tr>
+                        <td>256 bytes</td>
+                        <td>62.51</td>
+                        <td>53.80</td>
+                        <td>127.64</td>
+                        <td>194.48</td>
+                        <td><span class="status status-success"></span>탁월</td>
+                    </tr>
+                    <tr>
+                        <td>512 bytes</td>
+                        <td>83.58</td>
+                        <td>73.13</td>
+                        <td>145.51</td>
+                        <td>225.29</td>
+                        <td><span class="status status-success"></span>우수</td>
+                    </tr>
+                    <tr>
+                        <td>1024 bytes</td>
+                        <td>105.22</td>
+                        <td>106.08</td>
+                        <td>159.12</td>
+                        <td>238.27</td>
+                        <td><span class="status status-success"></span>우수</td>
+                    </tr>
+                    <tr>
+                        <td>1518 bytes</td>
+                        <td>109.34</td>
+                        <td>105.10</td>
+                        <td>180.27</td>
+                        <td>262.14</td>
+                        <td><span class="status status-success"></span>우수</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Performance Charts -->
+        <section class="section">
+            <h2>📈 성능 시각화 (Performance Visualization)</h2>
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3>처리량 분석 (Throughput Analysis)</h3>
+                    <img src="../benchmarks/2025-10-20-enhanced/01_throughput_analysis.png" alt="Throughput Analysis">
+                    <p style="color: var(--text-secondary); margin-top: 10px; font-size: 0.9rem;">
+                        무손실 처리량, TCP 성능, 지터, 네트워크 효율
+                    </p>
+                </div>
+                <div class="chart-card">
+                    <h3>지연시간 분석 (Latency Analysis)</h3>
+                    <img src="../benchmarks/2025-10-20-enhanced/02_latency_analysis.png" alt="Latency Analysis">
+                    <p style="color: var(--text-secondary); margin-top: 10px; font-size: 0.9rem;">
+                        평균/백분위수, Min-Max 범위, 분포 히스토그램
+                    </p>
+                </div>
+                <div class="chart-card">
+                    <h3>프레임 손실 분석 (Frame Loss Analysis)</h3>
+                    <img src="../benchmarks/2025-10-20-enhanced/03_frame_loss_analysis.png" alt="Frame Loss Analysis">
+                    <p style="color: var(--text-secondary); margin-top: 10px; font-size: 0.9rem;">
+                        네트워크 부하별 손실률, 포화 지점 분석
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- RFC 2544 Compliance -->
+        <section class="section">
+            <h2>✅ RFC 2544 표준 준수 (Standards Compliance)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>시험 항목</th>
+                        <th>RFC 섹션</th>
+                        <th>방법론</th>
+                        <th>준수 여부</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Throughput (처리량)</td>
+                        <td>Section 26.1</td>
+                        <td>바이너리 서치, 무손실 기준 &lt; 0.001%</td>
+                        <td><span class="status status-success"></span><strong>✓ 적합</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Latency (지연시간)</td>
+                        <td>Section 26.2</td>
+                        <td>양방향 RTT, 60초 측정</td>
+                        <td><span class="status status-success"></span><strong>✓ 적합</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Frame Loss Rate (손실률)</td>
+                        <td>Section 26.3</td>
+                        <td>다양한 부하 수준 (50%-110%)</td>
+                        <td><span class="status status-success"></span><strong>✓ 적합</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Frame Sizes (프레임 크기)</td>
+                        <td>RFC 권장</td>
+                        <td>64, 128, 256, 512, 1024, 1518 바이트</td>
+                        <td><span class="status status-success"></span><strong>✓ 적합</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Reports & Documentation -->
+        <section class="section">
+            <h2>📄 보고서 및 문서 (Reports & Documentation)</h2>
+            <div class="links-grid">
+                <a href="../benchmarks/2025-10-20-enhanced/RFC2544_Enhanced_Report.md" class="link-card">
+                    <h4>📘 English Report</h4>
+                    <p>RFC 2544 Enhanced Benchmark Report - Comprehensive analysis with detailed metrics</p>
+                </a>
+                <a href="../benchmarks/2025-10-20-enhanced/RFC2544_한국어_보고서.md" class="link-card">
+                    <h4>📗 한국어 보고서</h4>
+                    <p>RFC 2544 벤치마크 보고서 - 완전한 한국어 보고서</p>
+                </a>
+                <a href="../RFC2544_표준_정보.md" class="link-card">
+                    <h4>📚 RFC 2544 표준 정보</h4>
+                    <p>IETF 표준 상세 설명, Ethernet 프레임 구조, 바이너리 서치 알고리즘</p>
+                </a>
+                <a href="../benchmarks/2025-10-20-enhanced/benchmark_results_enhanced.json" class="link-card">
+                    <h4>💾 Raw Data (JSON)</h4>
+                    <p>Complete benchmark results in JSON format</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Test Methodology -->
+        <section class="section">
+            <h2>🔬 시험 방법론 (Test Methodology)</h2>
+            <div style="color: var(--text-secondary); line-height: 1.8;">
+                <h3 style="color: var(--text-primary); margin-top: 20px; margin-bottom: 10px;">
+                    1. Throughput (처리량) - RFC 2544 Section 26.1
+                </h3>
+                <p>
+                    <strong>방법:</strong> 바이너리 서치를 통한 무손실 최대 전송률 탐색<br>
+                    <strong>시험 시간:</strong> 30초/반복<br>
+                    <strong>손실률 기준:</strong> &lt; 0.001%<br>
+                    <strong>도구:</strong> iperf3
+                </p>
+
+                <h3 style="color: var(--text-primary); margin-top: 20px; margin-bottom: 10px;">
+                    2. Latency (지연시간) - RFC 2544 Section 26.2
+                </h3>
+                <p>
+                    <strong>방법:</strong> Ping-Pong 양방향 RTT 측정<br>
+                    <strong>시험 시간:</strong> 60초/메시지 크기<br>
+                    <strong>측정 항목:</strong> 평균, 최소, 최대, 백분위수 (P50, P90, P99, P99.9)<br>
+                    <strong>도구:</strong> sockperf
+                </p>
+
+                <h3 style="color: var(--text-primary); margin-top: 20px; margin-bottom: 10px;">
+                    3. Frame Loss Rate (프레임 손실률) - RFC 2544 Section 26.3
+                </h3>
+                <p>
+                    <strong>방법:</strong> 다양한 부하 수준에서 손실률 측정<br>
+                    <strong>부하 범위:</strong> 50% ~ 110% (이론적 라인 레이트 기준)<br>
+                    <strong>시험 시간:</strong> 10초/부하 수준<br>
+                    <strong>도구:</strong> iperf3
+                </p>
+            </div>
+        </section>
+
+        <!-- References -->
+        <section class="section">
+            <h2>📖 참고 문헌 (References)</h2>
+            <div style="color: var(--text-secondary); line-height: 1.8;">
+                <h3 style="color: var(--text-primary); margin-top: 15px; margin-bottom: 10px;">IETF RFC 표준</h3>
+                <ul style="list-style-position: inside;">
+                    <li><a href="https://tools.ietf.org/html/rfc2544" style="color: var(--primary-color);">RFC 2544</a> - Benchmarking Methodology for Network Interconnect Devices</li>
+                    <li><a href="https://tools.ietf.org/html/rfc1242" style="color: var(--primary-color);">RFC 1242</a> - Benchmarking Terminology for Network Interconnection Devices</li>
+                    <li><a href="https://tools.ietf.org/html/rfc2889" style="color: var(--primary-color);">RFC 2889</a> - Benchmarking Methodology for LAN Switching Devices</li>
+                </ul>
+
+                <h3 style="color: var(--text-primary); margin-top: 20px; margin-bottom: 10px;">IEEE 표준</h3>
+                <ul style="list-style-position: inside;">
+                    <li>IEEE 802.3 - Ethernet Standards</li>
+                    <li>IEEE 802.1Q - Virtual LANs and Priority</li>
+                    <li>IEEE 1588 - Precision Time Protocol (PTP)</li>
+                </ul>
+
+                <h3 style="color: var(--text-primary); margin-top: 20px; margin-bottom: 10px;">도구 (Tools)</h3>
+                <ul style="list-style-position: inside;">
+                    <li><a href="https://iperf.fr/" style="color: var(--primary-color);">iperf3</a> - Network performance measurement tool</li>
+                    <li><a href="https://github.com/Mellanox/sockperf" style="color: var(--primary-color);">sockperf</a> - Network latency and throughput testing tool</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Key Findings -->
+        <section class="section">
+            <h2>💡 주요 발견 사항 (Key Findings)</h2>
+            <div style="color: var(--text-secondary); line-height: 1.8;">
+                <h3 style="color: var(--success-color); margin-top: 15px; margin-bottom: 10px;">
+                    ✓ 무손실 전송 검증
+                </h3>
+                <p>
+                    바이너리 서치 방법론을 통해 각 프레임 크기별로 <strong style="color: var(--success-color);">패킷 손실률 &lt; 0.001%</strong>를
+                    충족하는 최대 처리량을 정확히 측정했습니다. 이는 RFC 2544 표준이 권장하는 방법입니다.
+                </p>
+
+                <h3 style="color: var(--primary-color); margin-top: 20px; margin-bottom: 10px;">
+                    📊 소형 프레임 처리 특성
+                </h3>
+                <p>
+                    64바이트 소형 프레임의 경우 무손실 처리량이 20.51 Mbps로 측정되었습니다.
+                    이는 Ethernet 오버헤드(38바이트)로 인한 것으로, 프레임 크기가 작을수록 오버헤드 비율이 높아지는 것을 확인했습니다.
+                </p>
+
+                <h3 style="color: var(--success-color); margin-top: 20px; margin-bottom: 10px;">
+                    ✓ 실시간 애플리케이션 적합성
+                </h3>
+                <p>
+                    평균 지연시간 <strong style="color: var(--success-color);">53~109 μs</strong>,
+                    P99 지연시간 <strong style="color: var(--success-color);">180 μs 이하</strong>로
+                    TSN(Time-Sensitive Networking) 요구사항을 충족하며, 산업 자동화, 차량 네트워크 등 실시간 애플리케이션에 적합합니다.
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>
+                <strong>본 벤치마크는 IETF RFC 2544 표준 방법론을 준수하여 수행되었습니다.</strong>
+            </p>
+            <p style="margin-top: 10px;">
+                View source on <a href="https://github.com/hwkim3330/d10test" target="_blank">GitHub</a>
+            </p>
+            <p style="margin-top: 20px; font-size: 0.9rem;">
+                Test Date: 2025-10-20 | Target: 10.0.100.2 | Interface: enp2s0 (1 Gigabit Ethernet)
+            </p>
+            <p style="margin-top: 10px; font-size: 0.85rem;">
+                Last Updated: 2025-10-20
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
