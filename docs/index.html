@@ -381,80 +381,91 @@
         <section class="section">
             <h2>🌐 네트워크 토폴로지 (Network Topology)</h2>
             <p style="color: var(--text-secondary); margin-bottom: 20px;">
-                IEEE 802.1CB FRER 구성 - 이중 스위치 리던던시 아키텍처
+                IEEE 802.1CB FRER 구성 - 2홉 선형 리던던시 아키텍처
             </p>
             <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 40px; border-radius: 12px; margin: 20px 0;">
-                <svg viewBox="0 0 800 600" style="width: 100%; max-width: 800px; margin: 0 auto; display: block;">
+                <svg viewBox="0 0 700 700" style="width: 100%; max-width: 700px; margin: 0 auto; display: block;">
                     <!-- Talker Node -->
-                    <rect x="350" y="20" width="100" height="80" rx="8" fill="#2563eb" stroke="#1e40af" stroke-width="2"/>
-                    <text x="400" y="50" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Talker</text>
-                    <text x="400" y="70" text-anchor="middle" fill="white" font-size="11">10.0.100.1</text>
-                    <text x="400" y="88" text-anchor="middle" fill="white" font-size="10">enp2s0</text>
+                    <rect x="275" y="30" width="150" height="90" rx="8" fill="#2563eb" stroke="#1e40af" stroke-width="2"/>
+                    <text x="350" y="60" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Talker</text>
+                    <text x="350" y="80" text-anchor="middle" fill="white" font-size="12">10.0.100.1</text>
+                    <text x="350" y="100" text-anchor="middle" fill="white" font-size="11">enp2s0</text>
 
-                    <!-- Connection from Talker -->
-                    <line x1="400" y1="100" x2="400" y2="150" stroke="#1e40af" stroke-width="3"/>
-                    <line x1="400" y1="150" x2="200" y2="200" stroke="#1e40af" stroke-width="3" stroke-dasharray="5,5"/>
-                    <line x1="400" y1="150" x2="600" y2="200" stroke="#1e40af" stroke-width="3" stroke-dasharray="5,5"/>
+                    <!-- Connection: Talker to Switch 1 -->
+                    <line x1="350" y1="120" x2="350" y2="180" stroke="#1e40af" stroke-width="4"/>
+                    <text x="360" y="155" fill="#1e40af" font-size="11" font-weight="bold">Port 4</text>
 
-                    <!-- Switch A -->
-                    <rect x="120" y="200" width="160" height="120" rx="8" fill="#7c3aed" stroke="#6d28d9" stroke-width="2"/>
-                    <text x="200" y="230" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Switch A</text>
-                    <text x="200" y="250" text-anchor="middle" fill="white" font-size="11">(FRER Node)</text>
+                    <!-- Switch 1 (Replication) -->
+                    <rect x="225" y="180" width="250" height="130" rx="8" fill="#7c3aed" stroke="#6d28d9" stroke-width="3"/>
+                    <text x="350" y="215" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Switch 1</text>
+                    <text x="350" y="235" text-anchor="middle" fill="white" font-size="12">(FRER Replication)</text>
 
-                    <!-- Switch A Ports -->
-                    <circle cx="150" cy="280" r="8" fill="#10b981" stroke="white" stroke-width="2"/>
-                    <text x="165" y="285" fill="white" font-size="10">Port 4 ← Talker</text>
+                    <!-- Switch 1 Ports -->
+                    <circle cx="260" cy="265" r="8" fill="#10b981" stroke="white" stroke-width="2"/>
+                    <text x="272" y="270" fill="white" font-size="10">Port 4 ← Talker</text>
 
-                    <circle cx="150" cy="300" r="8" fill="#10b981" stroke="white" stroke-width="2"/>
-                    <text x="165" y="305" fill="white" font-size="10">Port 1,2 ↔ SW B</text>
+                    <circle cx="260" cy="285" r="8" fill="#10b981" stroke="white" stroke-width="2"/>
+                    <text x="272" y="290" fill="white" font-size="10">Port 1,2 → SW2</text>
 
-                    <circle cx="220" cy="280" r="8" fill="#f59e0b" stroke="white" stroke-width="2"/>
-                    <text x="235" y="285" fill="white" font-size="10">Port 6 (Mgmt)</text>
+                    <circle cx="410" cy="265" r="8" fill="#f59e0b" stroke="white" stroke-width="2"/>
+                    <text x="422" y="270" fill="white" font-size="10">Port 6 (Mgmt)</text>
 
-                    <!-- Switch B -->
-                    <rect x="520" y="200" width="160" height="120" rx="8" fill="#7c3aed" stroke="#6d28d9" stroke-width="2"/>
-                    <text x="600" y="230" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Switch B</text>
-                    <text x="600" y="250" text-anchor="middle" fill="white" font-size="11">(FRER Node)</text>
+                    <!-- Frame Replication Label -->
+                    <text x="350" y="335" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="bold">▼ Frame Replication (복제)</text>
 
-                    <!-- Switch B Ports -->
-                    <circle cx="550" cy="280" r="8" fill="#10b981" stroke="white" stroke-width="2"/>
-                    <text x="565" y="285" fill="white" font-size="10">Port 4 → Listener</text>
+                    <!-- Dual Path from Switch 1 to Switch 2 -->
+                    <!-- Path 1 (Port 1) -->
+                    <line x1="300" y1="310" x2="280" y2="400" stroke="#10b981" stroke-width="4"/>
+                    <text x="240" y="360" fill="#059669" font-size="11" font-weight="bold">Port 1</text>
 
-                    <circle cx="550" cy="300" r="8" fill="#10b981" stroke="white" stroke-width="2"/>
-                    <text x="565" y="305" fill="white" font-size="10">Port 1,2 ↔ SW A</text>
+                    <!-- Path 2 (Port 2) -->
+                    <line x1="400" y1="310" x2="420" y2="400" stroke="#10b981" stroke-width="4"/>
+                    <text x="430" y="360" fill="#059669" font-size="11" font-weight="bold">Port 2</text>
 
-                    <circle cx="620" cy="280" r="8" fill="#f59e0b" stroke="white" stroke-width="2"/>
-                    <text x="635" y="285" fill="white" font-size="10">Port 6 (Mgmt)</text>
+                    <!-- Redundant Path Label -->
+                    <text x="350" y="365" text-anchor="middle" fill="#059669" font-size="12" font-weight="bold">듀얼 경로 (Dual Path)</text>
 
-                    <!-- Inter-switch connection -->
-                    <path d="M 280 260 Q 400 240 520 260" stroke="#10b981" stroke-width="4" fill="none"/>
-                    <text x="400" y="235" text-anchor="middle" fill="#059669" font-size="11" font-weight="bold">Port 1,2 ↔ Port 1,2</text>
+                    <!-- Switch 2 -->
+                    <rect x="225" y="400" width="250" height="130" rx="8" fill="#7c3aed" stroke="#6d28d9" stroke-width="3"/>
+                    <text x="350" y="435" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Switch 2</text>
+                    <text x="350" y="455" text-anchor="middle" fill="white" font-size="12">(FRER Reception)</text>
 
-                    <!-- Connections to Listener -->
-                    <line x1="200" y1="320" x2="200" y2="400" stroke="#6d28d9" stroke-width="3" stroke-dasharray="5,5"/>
-                    <line x1="600" y1="320" x2="600" y2="400" stroke="#6d28d9" stroke-width="3" stroke-dasharray="5,5"/>
-                    <line x1="200" y1="400" x2="400" y2="450" stroke="#6d28d9" stroke-width="3" stroke-dasharray="5,5"/>
-                    <line x1="600" y1="400" x2="400" y2="450" stroke="#6d28d9" stroke-width="3" stroke-dasharray="5,5"/>
+                    <!-- Switch 2 Ports -->
+                    <circle cx="260" cy="485" r="8" fill="#10b981" stroke="white" stroke-width="2"/>
+                    <text x="272" y="490" fill="white" font-size="10">Port 1,2 ← SW1</text>
+
+                    <circle cx="260" cy="505" r="8" fill="#10b981" stroke="white" stroke-width="2"/>
+                    <text x="272" y="510" fill="white" font-size="10">Port 4 → Listener</text>
+
+                    <circle cx="410" cy="485" r="8" fill="#f59e0b" stroke="white" stroke-width="2"/>
+                    <text x="422" y="490" fill="white" font-size="10">Port 6 (Mgmt)</text>
+
+                    <!-- Connection: Switch 2 to Listener -->
+                    <line x1="350" y1="530" x2="350" y2="590" stroke="#059669" stroke-width="4"/>
+                    <text x="360" y="565" fill="#059669" font-size="11" font-weight="bold">Port 4</text>
 
                     <!-- Listener Node -->
-                    <rect x="350" y="450" width="100" height="80" rx="8" fill="#10b981" stroke="#059669" stroke-width="2"/>
-                    <text x="400" y="480" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Listener</text>
-                    <text x="400" y="500" text-anchor="middle" fill="white" font-size="11">10.0.100.2</text>
-                    <text x="400" y="518" text-anchor="middle" fill="white" font-size="9">enx00051b5103bf</text>
-
-                    <!-- FRER Labels -->
-                    <text x="400" y="175" text-anchor="middle" fill="#1e40af" font-size="12" font-weight="bold">▼ Frame Replication</text>
-                    <text x="400" y="435" text-anchor="middle" fill="#059669" font-size="12" font-weight="bold">▲ Frame Elimination</text>
+                    <rect x="275" y="590" width="150" height="90" rx="8" fill="#10b981" stroke="#059669" stroke-width="2"/>
+                    <text x="350" y="620" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Listener</text>
+                    <text x="350" y="640" text-anchor="middle" fill="white" font-size="12">10.0.100.2</text>
+                    <text x="350" y="660" text-anchor="middle" fill="white" font-size="10">enx00051b5103bf</text>
+                    <text x="350" y="675" text-anchor="middle" fill="white" font-size="10">(Elimination)</text>
 
                     <!-- Legend -->
-                    <rect x="20" y="20" width="100" height="80" rx="5" fill="white" stroke="#cbd5e1" stroke-width="1"/>
-                    <text x="70" y="35" text-anchor="middle" fill="#1e293b" font-size="11" font-weight="bold">Legend</text>
-                    <circle cx="30" cy="50" r="5" fill="#10b981"/>
-                    <text x="40" y="54" fill="#64748b" font-size="9">Active Port</text>
-                    <circle cx="30" cy="68" r="5" fill="#f59e0b"/>
-                    <text x="40" y="72" fill="#64748b" font-size="9">Management</text>
-                    <line x1="30" y1="85" x2="60" y2="85" stroke="#1e40af" stroke-width="2" stroke-dasharray="3,3"/>
-                    <text x="65" y="88" fill="#64748b" font-size="9">Data Path</text>
+                    <rect x="20" y="30" width="120" height="95" rx="5" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+                    <text x="80" y="50" text-anchor="middle" fill="#1e293b" font-size="12" font-weight="bold">Legend</text>
+                    <circle cx="35" cy="65" r="5" fill="#10b981"/>
+                    <text x="45" y="69" fill="#64748b" font-size="10">Active Port</text>
+                    <circle cx="35" cy="85" r="5" fill="#f59e0b"/>
+                    <text x="45" y="89" fill="#64748b" font-size="10">Management</text>
+                    <line x1="35" y1="102" x2="70" y2="102" stroke="#10b981" stroke-width="3"/>
+                    <text x="75" y="105" fill="#64748b" font-size="10">Data Path</text>
+
+                    <!-- Hop Indicators -->
+                    <rect x="520" y="140" width="140" height="50" rx="5" fill="white" stroke="#2563eb" stroke-width="1"/>
+                    <text x="590" y="160" text-anchor="middle" fill="#1e293b" font-size="11" font-weight="bold">2-Hop Architecture</text>
+                    <text x="590" y="178" text-anchor="middle" fill="#64748b" font-size="10">Hop 1: Talker → SW1</text>
+                    <text x="590" y="188" text-anchor="middle" fill="#64748b" font-size="10">Hop 2: SW1 → SW2 → Listener</text>
                 </svg>
             </div>
 
@@ -472,14 +483,14 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>Switch A</strong></td>
-                            <td>↔ Switch B (Inter-switch Link)</td>
+                            <td><strong>Switch 1</strong></td>
+                            <td>→ Switch 2 (Dual Path, Redundant)</td>
                             <td>← Talker (10.0.100.1)</td>
                             <td>Management Interface</td>
                         </tr>
                         <tr>
-                            <td><strong>Switch B</strong></td>
-                            <td>↔ Switch A (Inter-switch Link)</td>
+                            <td><strong>Switch 2</strong></td>
+                            <td>← Switch 1 (Dual Path Reception)</td>
                             <td>→ Listener (10.0.100.2)</td>
                             <td>Management Interface</td>
                         </tr>
@@ -489,8 +500,10 @@
 
             <div style="background: #f0fdf4; border-left: 4px solid #10b981; padding: 15px; margin-top: 20px; border-radius: 4px;">
                 <p style="margin: 0; color: #166534; font-size: 0.95rem;">
-                    <strong>✓ FRER 동작:</strong> Talker에서 생성된 프레임은 Switch A와 B를 통해 복제되어 전송되며,
-                    Listener에서 중복 제거 및 시퀀스 복구가 수행됩니다. 이를 통해 단일 경로 장애 시에도 무손실 전송이 보장됩니다.
+                    <strong>✓ FRER 동작 (2홉 구조):</strong> Talker → Switch 1에서 프레임 <strong>복제(Replication)</strong> →
+                    Switch 1에서 Switch 2로 <strong>Port 1, 2 두 개 경로</strong>로 전송 → Switch 2에서 수신 →
+                    Listener에서 <strong>중복 제거(Elimination)</strong> 및 시퀀스 복구 수행.
+                    단일 경로 장애 시에도 나머지 경로를 통해 무손실 전송 보장.
                 </p>
             </div>
         </section>
