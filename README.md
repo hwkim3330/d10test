@@ -20,6 +20,14 @@
 - 도구별 성능 특성 비교 (iperf3, sockperf, mausezahn)
 - Fail-Operational 검증 및 실무 설계 가이드
 
+### 📊 그래프 상세 설명 (Graph Explanations)
+**📈 [성능 분석 그래프 상세 설명](GRAPH_EXPLANATIONS.md)**
+- **9개 그래프 각각에 대한 완전한 설명**
+- X축/Y축 의미, 데이터 포인트, 주요 트렌드
+- 핵심 인사이트 및 실무 적용 방안
+- 시나리오별 그래프 선택 가이드
+- SLA 설계, 용량 계획, 프레임 크기 선택 등 실전 예시
+
 ---
 
 ## 🎯 주요 성능 지표 (Latest Results)
