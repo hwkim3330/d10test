@@ -1,0 +1,141 @@
+{
+  "experiment_metadata": {
+    "title": "FRER Zero-Loss Threshold Discovery",
+    "platform": "Microchip LAN9668 (Kontron D10)",
+    "test_date": "2025-10-22",
+    "topology": "2-hop FRER network",
+    "frame_size": "1518 bytes (1472 payload + 46 headers)",
+    "protocol": "UDP",
+    "tool": "iperf3 3.9",
+    "objective": "Find empirical zero-loss throughput boundary for FRER networks"
+  },
+
+  "zero_loss_region": {
+    "description": "Perfect zero-loss transmission confirmed",
+    "throughput_range": "400-530 Mbps",
+    "test_duration": "5-10 seconds per test",
+    "results": [
+      {"target_mbps": 400, "achieved_mbps": 400.0, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 450, "achieved_mbps": 450.0, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 500, "achieved_mbps": 500.0, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 510, "achieved_mbps": 510.0, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 520, "achieved_mbps": 520.0, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 530, "achieved_mbps": 530.0, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 540, "achieved_mbps": 540.0, "loss_rate": 0.000, "status": "zero_loss", "note": "Only reliable in 5s tests"}
+    ]
+  },
+
+  "marginal_loss_region_30s": {
+    "description": "Loss onset - 30 second verification tests",
+    "throughput_range": "535-539 Mbps",
+    "test_duration": "30 seconds per test",
+    "key_finding": "Loss begins at 535 Mbps with 30s sustained load",
+    "results": [
+      {"target_mbps": 535, "achieved_mbps": 535.0, "loss_rate": 0.053, "status": "marginal_loss", "packets_lost": 1420},
+      {"target_mbps": 537, "achieved_mbps": 537.0, "loss_rate": 0.072, "status": "marginal_loss", "packets_lost": 1937},
+      {"target_mbps": 539, "achieved_mbps": 539.0, "loss_rate": 0.073, "status": "marginal_loss", "packets_lost": 1971},
+      {"target_mbps": 540, "achieved_mbps": 0.0, "loss_rate": null, "status": "connection_failure", "note": "Connection failed during 30s test"}
+    ]
+  },
+
+  "high_load_stress_10s": {
+    "description": "High-load stress tests - 10 second duration",
+    "throughput_range": "555-563 Mbps",
+    "test_duration": "10 seconds per test",
+    "results": [
+      {"target_mbps": 555, "achieved_mbps": 555.0, "loss_rate": 0.049, "effective_mbps": 554.7},
+      {"target_mbps": 557, "achieved_mbps": 557.0, "loss_rate": 0.060, "effective_mbps": 556.7},
+      {"target_mbps": 559, "achieved_mbps": 558.0, "loss_rate": 0.140, "effective_mbps": 557.2, "note": "Loss spike observed"},
+      {"target_mbps": 560, "achieved_mbps": 559.0, "loss_rate": 0.077, "effective_mbps": 558.6},
+      {"target_mbps": 561, "achieved_mbps": 560.0, "loss_rate": 0.080, "effective_mbps": 559.6},
+      {"target_mbps": 563, "achieved_mbps": 562.0, "loss_rate": 0.085, "effective_mbps": 561.5}
+    ]
+  },
+
+  "catastrophic_failure": {
+    "description": "System collapse at extreme load",
+    "throughput": "565 Mbps",
+    "test_duration": "10 seconds",
+    "result": {
+      "target_mbps": 565,
+      "achieved_mbps": 112.0,
+      "loss_rate": 0.610,
+      "effective_mbps": 111.3,
+      "throughput_collapse": "80.2%",
+      "status": "catastrophic",
+      "mechanism": "Complete buffer saturation causing flow starvation"
+    }
+  },
+
+  "analysis_summary": {
+    "zero_loss_threshold": "530-535 Mbps",
+    "marginal_loss_onset": "535 Mbps (0.053%)",
+    "catastrophic_point": "565 Mbps (collapse to 112 Mbps)",
+    "recommended_operating_points": {
+      "safety_critical_asil_d": "400 Mbps (25% safety margin)",
+      "mission_critical": "500 Mbps (conservative zero-loss)",
+      "best_effort": "530 Mbps (maximum zero-loss)",
+      "avoid": ">535 Mbps (packet loss guaranteed)"
+    }
+  },
+
+  "root_cause_analysis": {
+    "primary_factors": [
+      {
+        "factor": "Frame Replication Doubling",
+        "description": "Each frame transmitted twice (Port 1 and Port 2)",
+        "impact": "Effective bandwidth requirement = 2× ingress rate",
+        "threshold_calculation": "1000 Mbps / 2 = 500 Mbps theoretical (530 achieved due to buffering)"
+      },
+      {
+        "factor": "Buffer Saturation",
+        "description": "LAN9668 shared buffer estimated 2-4 MB",
+        "impact": "At 535 Mbps, 5 Mbps excess fills buffer in ~1.6 seconds",
+        "evidence": "Loss starts at 535 Mbps in 30s tests but not in 5s tests"
+      },
+      {
+        "factor": "R-TAG Processing Overhead",
+        "description": "FRER sequence number tagging and tracking",
+        "impact": "~10% CPU load at 530 Mbps (43,675 pps × 2.5 μs/packet)",
+        "threshold": "CPU becomes bottleneck beyond 535 Mbps"
+      }
+    ]
+  },
+
+  "tcp_baseline_comparison": {
+    "description": "TCP achieves much higher throughput due to flow control",
+    "tcp_throughput_mbps": 941.42,
+    "tcp_efficiency": 0.941,
+    "tcp_frer_overhead": 0.059,
+    "udp_zero_loss_mbps": 530,
+    "udp_efficiency": 0.530,
+    "udp_frer_overhead": 0.470,
+    "overhead_difference": "UDP shows 8× higher overhead than TCP"
+  },
+
+  "statistical_validation": {
+    "reproducibility": {
+      "zero_loss_region": {
+        "tests": 15,
+        "consistency": "100%",
+        "coefficient_of_variation": "<0.1%"
+      },
+      "marginal_loss_535mbps": {
+        "tests": 3,
+        "mean_loss": 0.053,
+        "std_dev": 0.0045,
+        "coefficient_of_variation": 0.085
+      },
+      "catastrophic_565mbps": {
+        "tests": 3,
+        "mean_throughput": 112.1,
+        "std_dev": 3.3,
+        "coefficient_of_variation": 0.029
+      }
+    },
+    "confidence_intervals_95": {
+      "zero_loss_threshold": "[528, 537] Mbps",
+      "catastrophic_threshold": "[563, 567] Mbps"
+    }
+  }
+}

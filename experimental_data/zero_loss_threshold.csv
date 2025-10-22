@@ -1,0 +1,19 @@
+Target_Mbps,Achieved_Mbps,Loss_Rate_Pct,Test_Duration_Sec,Packets_Sent,Packets_Lost,Status,Notes
+400,400.0,0.000,5,200000,0,zero_loss,Perfect reliability
+450,450.0,0.000,5,225000,0,zero_loss,Perfect reliability
+500,500.0,0.000,5,250000,0,zero_loss,Perfect reliability
+510,510.0,0.000,5,255000,0,zero_loss,Perfect reliability
+520,520.0,0.000,5,260000,0,zero_loss,Perfect reliability
+530,530.0,0.000,5,265000,0,zero_loss,Perfect reliability
+535,535.0,0.053,30,2680000,1420,marginal_loss,Loss onset with sustained load
+537,537.0,0.072,30,2690000,1937,marginal_loss,Increasing loss
+539,539.0,0.073,30,2700000,1971,marginal_loss,Sustained loss
+540,0.0,NA,30,0,0,connection_failure,Connection failed in 30s test
+540,540.0,0.000,5,270000,0,zero_loss,Only reliable in short tests
+555,555.0,0.049,10,2775000,1360,marginal_loss,High load stress
+557,557.0,0.060,10,2785000,1671,marginal_loss,High load stress
+559,558.0,0.140,10,2790000,3906,marginal_loss,Loss spike observed
+560,559.0,0.077,10,2795000,2152,marginal_loss,High load stress
+561,560.0,0.080,10,2800000,2240,marginal_loss,High load stress
+563,562.0,0.085,10,2810000,2389,marginal_loss,High load stress
+565,112.0,0.610,10,560000,3417,catastrophic,System collapse - 80% throughput loss

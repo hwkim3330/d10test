@@ -120,7 +120,15 @@
 
 ---
 
-## 📁 보고서 및 데이터 (Reports & Data)
+## 📁 실험 데이터 (Experimental Data)
+
+### 종합 데이터 세트 (Comprehensive Datasets)
+- 📊 **[Zero-Loss Threshold Data (JSON)](experimental_data/frer_zero_loss_threshold_data.json)** - 535-565 Mbps fine-grained analysis
+- 📊 **[RFC 2544 Comprehensive Data (JSON)](experimental_data/rfc2544_comprehensive_data.json)** - Complete RFC 2544 benchmark results
+- 📄 **[Zero-Loss Threshold (CSV)](experimental_data/zero_loss_threshold.csv)** - Excel-compatible format
+- 📄 **[RFC 2544 Zero-Loss (CSV)](experimental_data/rfc2544_zero_loss.csv)** - Frame size analysis
+- 📄 **[Latency Measurements (CSV)](experimental_data/latency_measurements.csv)** - TSN compliance data
+- 📖 **[Experimental Methodology](experimental_data/EXPERIMENTAL_METHODOLOGY.md)** - Complete testing procedures (6,000+ words)
 
 ### 최신 결과 (Latest - 2025-10-20)
 - 📄 **[English Report](benchmarks/2025-10-20-enhanced/RFC2544_Enhanced_Report.md)** - RFC 2544 Enhanced Benchmark Report
@@ -191,6 +199,23 @@ python3 scripts/generate_korean_report.py <results_directory>
 ```
 
 ---
+
+## 📚 학술 논문 (Research Papers)
+
+### FRER 처리량 한계 분석 논문
+- 📄 **[Empirical Analysis of FRER Throughput Limitations (English)](FRER_Throughput_Limitations_Paper.md)**
+  - **Platform:** Microchip LAN9668 / Kontron D10
+  - **Key Findings:**
+    - Zero-loss threshold: 530-535 Mbps
+    - Marginal loss region: 535-563 Mbps (0.05-0.085%)
+    - Catastrophic failure: 565 Mbps (collapse to 112 Mbps)
+  - **Root Causes:** Frame replication doubling (2×), buffer saturation (~2-4 MB), R-TAG overhead (~10% CPU)
+  - **Length:** 6,200+ words, 10 references, 3 appendices
+
+### 기존 성능 평가 논문
+- 📄 **[자동차 이더넷의 신뢰성 확보를 위한 FRER 기반 TSN 이중화 기법 (한글)](FRER_TSN_Performance_Paper.md)**
+  - 완전한 FRER 구현 방법론 및 성능 평가
+  - 프레임 크기별 처리량 분석 (64B ~ 1518B)
 
 ## 📖 참고 문헌 (References)
 
