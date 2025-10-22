@@ -114,6 +114,13 @@
             height: auto;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .graph-container img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
         }
 
         .graph-title {
@@ -121,6 +128,48 @@
             font-weight: 600;
             color: #334155;
             margin-bottom: 1rem;
+        }
+
+        /* Modal for image zoom */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow: auto;
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 95%;
+            max-height: 95vh;
+            animation: zoom 0.3s;
+        }
+
+        @keyframes zoom {
+            from {transform: scale(0.7)}
+            to {transform: scale(1)}
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: #f1f1f1;
+            font-size: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
         }
 
         .table-container {
@@ -175,6 +224,11 @@
             color: #991b1b;
         }
 
+        .badge.info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
         .highlight-box {
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
             border-left: 4px solid #f59e0b;
@@ -190,6 +244,51 @@
 
         .highlight-box p {
             color: #78350f;
+            line-height: 1.8;
+        }
+
+        .limitation-box {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-left: 4px solid #dc2626;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+
+        .limitation-box h3 {
+            color: #991b1b;
+            margin-bottom: 0.75rem;
+        }
+
+        .limitation-box p, .limitation-box ul {
+            color: #7f1d1d;
+            line-height: 1.8;
+        }
+
+        .limitation-box ul {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .limitation-box li {
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left: 4px solid #2563eb;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+
+        .info-box h3 {
+            color: #1e40af;
+            margin-bottom: 0.75rem;
+        }
+
+        .info-box p {
+            color: #1e3a8a;
             line-height: 1.8;
         }
 
@@ -250,10 +349,22 @@
             .section {
                 padding: 1.5rem;
             }
+
+            .close {
+                top: 10px;
+                right: 20px;
+                font-size: 35px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
     <div class="header">
         <h1>IEEE 802.1CB FRER Network Performance Analysis</h1>
         <p>Comprehensive Benchmarking Report - 2025-10-20</p>
@@ -290,19 +401,32 @@
             <h2>Executive Summary</h2>
             <p style="margin-bottom: 1rem; font-size: 1.05rem; line-height: 1.8;">
                 본 보고서는 IEEE 802.1CB FRER (Frame Replication and Elimination for Reliability) 네트워크의
-                성능을 RFC 2544 표준 기반으로 종합 평가한 결과를 제시합니다. Microchip LAN9662 스위치를 활용한
-                2-hop 이중화 아키텍처에서 TCP 941.42 Mbps, UDP 530 Mbps의 zero-loss 처리량을 달성했으며,
-                평균 레이턴시 53-109 μs로 TSN 요구사항을 충족함을 확인했습니다.
+                성능을 다양한 측정 도구(iperf3, RFC 2544, mausezahn)로 종합 평가한 결과를 제시합니다.
+                Microchip LAN9662 스위치를 활용한 2-hop 이중화 아키텍처에서
+                <strong>iperf3 직접 테스트 기준 UDP 530 Mbps zero-loss throughput</strong>을 달성했으며,
+                TCP는 941.42 Mbps, 평균 레이턴시 53-109 μs로 TSN 요구사항을 충족함을 확인했습니다.
             </p>
 
             <div class="highlight-box">
-                <h3>주요 발견 사항</h3>
+                <h3>핵심 발견 사항 (Key Findings)</h3>
                 <p>
-                    <strong>1.</strong> iperf3를 활용한 실제 애플리케이션 테스트에서 UDP zero-loss throughput은 530 Mbps로 측정됨<br>
-                    <strong>2.</strong> RFC 2544 binary search (341 Mbps)는 0.001% 임계값으로 인해 보수적으로 낮은 값 도출<br>
-                    <strong>3.</strong> mausezahn (246 Mbps)은 패킷 생성 도구의 한계이며 네트워크 성능 상한이 아님<br>
-                    <strong>4.</strong> FRER 이중화로 인해 TCP는 6%, UDP는 47% 오버헤드 발생<br>
-                    <strong>5.</strong> 모든 프레임 크기에서 P99.9 레이턴시가 300 μs 이하로 TSN 요구사항 충족
+                    <strong>1. 테스트 도구별 UDP Throughput 비교:</strong><br>
+                    • <strong>iperf3 직접 측정: 520-540 Mbps</strong> (실제 애플리케이션 성능) ⭐<br>
+                    • RFC 2544 binary search: 341 Mbps (표준 준수 벤치마크, 매우 보수적)<br>
+                    • mausezahn: 246 Mbps (패킷 생성 도구의 한계, 네트워크 용량 아님)<br><br>
+
+                    <strong>2. FRER 이중화 오버헤드:</strong><br>
+                    • TCP: 6% (흐름 제어로 인해 최소)<br>
+                    • UDP: 47% (흐름 제어 부재로 인해 높음)<br><br>
+
+                    <strong>3. TSN 레이턴시 요구사항 충족:</strong><br>
+                    • 평균: 53-109 μs<br>
+                    • P99.9: 245-338 μs (대부분 < 300 μs)<br><br>
+
+                    <strong>4. iperf3가 RFC 2544보다 58% 높은 throughput을 보인 이유:</strong><br>
+                    • RFC 2544의 0.001% loss threshold가 너무 보수적<br>
+                    • 랜덤 패킷 손실 변동으로 조기 수렴<br>
+                    • 실제 zero-loss 용량은 iperf3 결과에 가까움
                 </p>
             </div>
         </div>
@@ -312,7 +436,7 @@
             <h2>1. Network Topology</h2>
             <div class="graph-container">
                 <div class="graph-title">IEEE 802.1CB FRER 2-Hop Architecture</div>
-                <img src="../visualizations/network_topology.png" alt="Network Topology">
+                <img src="../visualizations/network_topology.png" alt="Network Topology" onclick="openModal(this.src)">
             </div>
 
             <div class="methodology">
@@ -327,12 +451,156 @@
             </div>
         </div>
 
+        <!-- iperf3 Extended Test - NEW DEDICATED SECTION -->
+        <div class="section">
+            <h2>2. iperf3 Extended UDP Test (실제 애플리케이션 성능)</h2>
+
+            <div class="info-box">
+                <h3>📊 iperf3 Extended Test 개요</h3>
+                <p>
+                    RFC 2544 binary search가 341 Mbps의 보수적 결과를 보인 후,
+                    <strong>실제 네트워크의 zero-loss 용량을 확인하기 위해 수행한 직접 테스트</strong>입니다.
+                    400-950 Mbps 범위를 50 Mbps 간격으로 체계적으로 스윕하여 실제 zero-loss 경계를 찾았습니다.
+                </p>
+            </div>
+
+            <div class="graph-container">
+                <div class="graph-title">UDP Throughput Sweep: 400-950 Mbps (Zero-Loss Detection)</div>
+                <img src="../visualizations/udp_loss_curve.png" alt="UDP Loss Curve" onclick="openModal(this.src)">
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Target Throughput</th>
+                            <th>Actual Throughput</th>
+                            <th>Loss Rate</th>
+                            <th>Test Duration</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>400 Mbps</td>
+                            <td>400 Mbps</td>
+                            <td><span class="badge success">0.00%</span></td>
+                            <td>5 sec</td>
+                            <td><span class="badge success">✓ Zero-Loss</span></td>
+                        </tr>
+                        <tr>
+                            <td>450 Mbps</td>
+                            <td>450 Mbps</td>
+                            <td><span class="badge success">0.00%</span></td>
+                            <td>5 sec</td>
+                            <td><span class="badge success">✓ Zero-Loss</span></td>
+                        </tr>
+                        <tr style="background: #dcfce7;">
+                            <td><strong>500 Mbps</strong></td>
+                            <td><strong>500 Mbps</strong></td>
+                            <td><span class="badge success">0.00%</span></td>
+                            <td>5 sec</td>
+                            <td><span class="badge success">✓ Zero-Loss ⭐</span></td>
+                        </tr>
+                        <tr>
+                            <td>520 Mbps</td>
+                            <td>520 Mbps</td>
+                            <td><span class="badge success">0.00%</span></td>
+                            <td>5 sec</td>
+                            <td><span class="badge success">✓ Zero-Loss</span></td>
+                        </tr>
+                        <tr>
+                            <td>540 Mbps</td>
+                            <td>540 Mbps</td>
+                            <td><span class="badge success">0.00%</span></td>
+                            <td>5 sec</td>
+                            <td><span class="badge success">✓ Zero-Loss</span></td>
+                        </tr>
+                        <tr style="background: #fef3c7;">
+                            <td>550 Mbps</td>
+                            <td>547-550 Mbps</td>
+                            <td><span class="badge warning">0.24-0.56%</span></td>
+                            <td>5 sec</td>
+                            <td><span class="badge warning">⚠ Marginal Loss</span></td>
+                        </tr>
+                        <tr>
+                            <td>600 Mbps</td>
+                            <td>597-599 Mbps</td>
+                            <td><span class="badge warning">0.30-0.52%</span></td>
+                            <td>5 sec</td>
+                            <td><span class="badge warning">Loss Detected</span></td>
+                        </tr>
+                        <tr>
+                            <td>700 Mbps</td>
+                            <td>683-690 Mbps</td>
+                            <td><span class="badge danger">1.40-2.30%</span></td>
+                            <td>5 sec</td>
+                            <td><span class="badge danger">High Loss</span></td>
+                        </tr>
+                        <tr>
+                            <td>900 Mbps</td>
+                            <td>871-876 Mbps</td>
+                            <td><span class="badge danger">2.60-3.20%</span></td>
+                            <td>5 sec</td>
+                            <td><span class="badge danger">High Loss</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="highlight-box">
+                <h3>✅ iperf3 Extended Test 결론</h3>
+                <p>
+                    <strong>Maximum Sustained Zero-Loss Throughput: 520-540 Mbps</strong><br><br>
+
+                    <strong>Zero-Loss Zone (400-540 Mbps):</strong><br>
+                    • 완전 무손실 구간<br>
+                    • 권장 운영 범위: 500 Mbps (안전 마진 80% 적용 시 400 Mbps)<br><br>
+
+                    <strong>Marginal Loss Zone (540-600 Mbps):</strong><br>
+                    • 0.2-0.5% 미세 손실 발생<br>
+                    • 버퍼 압력 증가 시작<br><br>
+
+                    <strong>High Loss Zone (600+ Mbps):</strong><br>
+                    • 1-3% 높은 손실률<br>
+                    • FRER 이중화 오버헤드로 인한 버퍼 오버플로우
+                </p>
+            </div>
+
+            <div class="limitation-box">
+                <h3>⚠️ iperf3 Extended Test의 한계점 (Limitations)</h3>
+                <p>
+                    <strong>1. 테스트 지속 시간:</strong><br>
+                    • 각 테스트가 5초로 짧음 (RFC 2544는 30초)<br>
+                    • 장기 안정성 검증에는 부족할 수 있음<br><br>
+
+                    <strong>2. 정밀도:</strong><br>
+                    • iperf3는 실제 애플리케이션 시뮬레이션이 목적<br>
+                    • 패킷 단위 정밀 제어는 mausezahn이 더 우수<br><br>
+
+                    <strong>3. 재현성:</strong><br>
+                    • 네트워크 상태에 따라 변동 가능<br>
+                    • 여러 번 반복 테스트 권장<br><br>
+
+                    <strong>4. 표준 준수:</strong><br>
+                    • RFC 2544 표준을 완벽히 따르지 않음<br>
+                    • 공식 인증에는 RFC 2544 결과 사용 권장
+                </p>
+            </div>
+
+            <div style="text-align: center; margin: 2rem 0;">
+                <a href="../visualizations/interactive_udp_sweep.html" class="interactive-link" target="_blank">
+                    📈 Interactive Chart 보기
+                </a>
+            </div>
+        </div>
+
         <!-- Tool Comparison -->
         <div class="section">
-            <h2>2. Tool Comparison Analysis</h2>
+            <h2>3. Tool Comparison Analysis (테스트 도구 비교)</h2>
             <div class="graph-container">
-                <div class="graph-title">Performance Comparison: TCP vs UDP (Multiple Tools)</div>
-                <img src="../visualizations/tool_comparison.png" alt="Tool Comparison">
+                <div class="graph-title">Performance Comparison: iperf3 vs RFC 2544 vs mausezahn</div>
+                <img src="../visualizations/tool_comparison.png" alt="Tool Comparison" onclick="openModal(this.src)">
             </div>
 
             <div class="table-container">
@@ -343,7 +611,8 @@
                             <th>Protocol</th>
                             <th>Throughput</th>
                             <th>Loss Rate</th>
-                            <th>Use Case</th>
+                            <th>Purpose</th>
+                            <th>Limitations</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -352,28 +621,32 @@
                             <td>TCP</td>
                             <td><strong>941.42 Mbps</strong></td>
                             <td><span class="badge success">Zero</span></td>
-                            <td>Real-world application performance (reliable transport)</td>
+                            <td>실제 애플리케이션 성능 (신뢰성 있는 전송)</td>
+                            <td>흐름 제어로 인한 오버헤드</td>
                         </tr>
-                        <tr>
-                            <td><strong>iperf3</strong></td>
+                        <tr style="background: #dcfce7;">
+                            <td><strong>iperf3 (Extended)</strong></td>
                             <td>UDP</td>
                             <td><strong>520-540 Mbps</strong></td>
                             <td><span class="badge success">0%</span></td>
-                            <td>Real-world application performance (unreliable transport)</td>
+                            <td>실제 UDP 애플리케이션 성능 측정</td>
+                            <td>짧은 테스트 시간(5초), 정밀도 낮음</td>
                         </tr>
                         <tr>
-                            <td><strong>iperf3</strong></td>
+                            <td><strong>iperf3 (RFC 2544)</strong></td>
                             <td>UDP</td>
                             <td>341.47 Mbps</td>
                             <td><span class="badge success">&lt; 0.001%</span></td>
-                            <td>RFC 2544 binary search (conservative, standards-compliant)</td>
+                            <td>표준 준수 벤치마크 (공식 인증용)</td>
+                            <td>0.001% 임계값으로 인한 과도한 보수성</td>
                         </tr>
                         <tr>
                             <td><strong>mausezahn</strong></td>
                             <td>UDP</td>
                             <td>246.50 Mbps</td>
                             <td>N/A</td>
-                            <td>Precision packet generation (tool limitation, not network limit)</td>
+                            <td>정밀 패킷 생성 (프로토콜 검증)</td>
+                            <td>도구의 성능 한계, 네트워크 용량 아님</td>
                         </tr>
                     </tbody>
                 </table>
@@ -382,14 +655,25 @@
             <div class="highlight-box">
                 <h3>도구별 성능 차이 원인</h3>
                 <p>
-                    <strong>iperf3가 mausezahn보다 2배 이상 높은 이유:</strong><br>
-                    • iperf3: 대량 데이터 전송 최적화, sendmmsg 시스템 콜 활용, 커널 소켓 버퍼 사용<br>
-                    • mausezahn: 개별 패킷 생성, 마이크로초 단위 타이밍 제어, 사용자 공간 버퍼링<br><br>
-                    <strong>RFC 2544 binary search가 낮은 이유:</strong><br>
-                    • 0.001% 임계값으로 인한 극도로 보수적 수렴<br>
-                    • 랜덤 패킷 손실 변동으로 인한 조기 수렴<br>
-                    • 실제 zero-loss 용량은 직접 테스트 결과인 530 Mbps에 가까움
+                    <strong>iperf3 Extended (530 Mbps) vs RFC 2544 (341 Mbps) - 58% 차이:</strong><br>
+                    • RFC 2544의 0.001% loss threshold가 극도로 보수적<br>
+                    • 랜덤 패킷 손실 변동으로 binary search가 조기 수렴<br>
+                    • iperf3 직접 테스트가 실제 zero-loss 용량에 더 가까움<br><br>
+
+                    <strong>iperf3 (530 Mbps) vs mausezahn (246 Mbps) - 115% 차이:</strong><br>
+                    • iperf3: 대량 데이터 전송 최적화, sendmmsg 시스템 콜, 커널 소켓 버퍼<br>
+                    • mausezahn: 개별 패킷 생성, μs 단위 타이밍 제어, 사용자 공간 버퍼링<br>
+                    • <strong>mausezahn 결과는 패킷 생성 도구의 한계이며 네트워크 성능 상한이 아님</strong>
                 </p>
+            </div>
+
+            <div class="limitation-box">
+                <h3>⚠️ 각 도구의 한계점 (Tool Limitations)</h3>
+                <ul>
+                    <li><strong>iperf3:</strong> 실제 성능은 측정하지만 표준 준수성이 낮음, 짧은 테스트 시간</li>
+                    <li><strong>RFC 2544 Binary Search:</strong> 표준 준수하지만 0.001% 임계값으로 인해 과도하게 보수적, 실제보다 낮은 결과</li>
+                    <li><strong>mausezahn:</strong> 패킷 생성 도구의 성능 한계, 네트워크의 실제 처리량과 무관</li>
+                </ul>
             </div>
 
             <div style="text-align: center; margin: 2rem 0;">
@@ -401,10 +685,10 @@
 
         <!-- Frame Size Analysis -->
         <div class="section">
-            <h2>3. Frame Size Analysis</h2>
+            <h2>4. Frame Size Analysis (mausezahn 기반)</h2>
             <div class="graph-container">
                 <div class="graph-title">Throughput and Efficiency vs Frame Size</div>
-                <img src="../visualizations/frame_size_analysis.png" alt="Frame Size Analysis">
+                <img src="../visualizations/frame_size_analysis.png" alt="Frame Size Analysis" onclick="openModal(this.src)">
             </div>
 
             <div class="table-container">
@@ -465,115 +749,23 @@
                 </table>
             </div>
 
-            <p style="margin-top: 1rem; line-height: 1.8;">
-                모든 프레임 크기에서 일관되게 25% 효율을 보이는 것은 FRER 이중화 오버헤드가 주요 제한 요인임을 시사합니다.
-                프레임 복제 및 이중 경로 전송으로 인해 실질적으로 4배의 대역폭 사용이 발생합니다.
-            </p>
-        </div>
-
-        <!-- UDP Sweep Analysis -->
-        <div class="section">
-            <h2>4. UDP Throughput vs Packet Loss</h2>
-            <div class="graph-container">
-                <div class="graph-title">Systematic UDP Throughput Sweep (400-950 Mbps)</div>
-                <img src="../visualizations/udp_loss_curve.png" alt="UDP Loss Curve">
-            </div>
-
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Target Throughput</th>
-                            <th>Actual Throughput</th>
-                            <th>Loss Rate</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>400 Mbps</td>
-                            <td>400 Mbps</td>
-                            <td><span class="badge success">0.00%</span></td>
-                            <td><span class="badge success">Zero-Loss</span></td>
-                        </tr>
-                        <tr>
-                            <td>450 Mbps</td>
-                            <td>450 Mbps</td>
-                            <td><span class="badge success">0.00%</span></td>
-                            <td><span class="badge success">Zero-Loss</span></td>
-                        </tr>
-                        <tr>
-                            <td>500 Mbps</td>
-                            <td>500 Mbps</td>
-                            <td><span class="badge success">0.00%</span></td>
-                            <td><span class="badge success">Zero-Loss ✓</span></td>
-                        </tr>
-                        <tr>
-                            <td>520 Mbps</td>
-                            <td>520 Mbps</td>
-                            <td><span class="badge success">0.00%</span></td>
-                            <td><span class="badge success">Zero-Loss</span></td>
-                        </tr>
-                        <tr>
-                            <td>540 Mbps</td>
-                            <td>540 Mbps</td>
-                            <td><span class="badge success">0.00%</span></td>
-                            <td><span class="badge success">Zero-Loss</span></td>
-                        </tr>
-                        <tr>
-                            <td>550 Mbps</td>
-                            <td>547-550 Mbps</td>
-                            <td><span class="badge warning">0.24-0.56%</span></td>
-                            <td><span class="badge warning">Marginal Loss</span></td>
-                        </tr>
-                        <tr>
-                            <td>600 Mbps</td>
-                            <td>597-599 Mbps</td>
-                            <td><span class="badge warning">0.30-0.52%</span></td>
-                            <td><span class="badge warning">Loss Detected</span></td>
-                        </tr>
-                        <tr>
-                            <td>700 Mbps</td>
-                            <td>683-690 Mbps</td>
-                            <td><span class="badge danger">1.40-2.30%</span></td>
-                            <td><span class="badge danger">High Loss</span></td>
-                        </tr>
-                        <tr>
-                            <td>900 Mbps</td>
-                            <td>871-876 Mbps</td>
-                            <td><span class="badge danger">2.60-3.20%</span></td>
-                            <td><span class="badge danger">High Loss</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="highlight-box">
-                <h3>Zero-Loss Operating Zone</h3>
+            <div class="limitation-box">
+                <h3>⚠️ mausezahn Frame Size Test의 한계</h3>
                 <p>
-                    <strong>Maximum Sustained Zero-Loss Throughput: 520-540 Mbps</strong><br>
-                    • 400-540 Mbps: 완전 무손실 구간 (권장 운영 범위)<br>
-                    • 540-600 Mbps: 미세 손실 구간 (0.2-0.5% loss)<br>
-                    • 600+ Mbps: 높은 손실 구간 (1-3% loss)<br><br>
-                    <strong>네트워크 계획 권장사항:</strong><br>
-                    • UDP 애플리케이션: 500 Mbps 목표 (안전 마진 포함 400 Mbps)<br>
-                    • TCP 애플리케이션: 940 Mbps 목표 (안전 마진 포함 750 Mbps)
+                    <strong>이 결과는 mausezahn 패킷 생성 도구의 한계를 보여줍니다:</strong><br>
+                    • 모든 프레임 크기에서 일관된 25% 효율 = 도구의 처리 한계<br>
+                    • 실제 네트워크 용량은 iperf3 테스트에서 확인된 530 Mbps (53% 효율)<br>
+                    • 이 테스트는 FRER 오버헤드를 측정하기보다 mausezahn의 성능 한계를 보여줌
                 </p>
-            </div>
-
-            <div style="text-align: center; margin: 2rem 0;">
-                <a href="../visualizations/interactive_udp_sweep.html" class="interactive-link" target="_blank">
-                    📈 Interactive Chart 보기
-                </a>
             </div>
         </div>
 
         <!-- Latency Analysis -->
         <div class="section">
-            <h2>5. Latency Distribution</h2>
+            <h2>5. Latency Distribution (sockperf 기반)</h2>
             <div class="graph-container">
                 <div class="graph-title">Round-Trip Latency by Frame Size (Average, P99, P99.9)</div>
-                <img src="../visualizations/latency_distribution.png" alt="Latency Distribution">
+                <img src="../visualizations/latency_distribution.png" alt="Latency Distribution" onclick="openModal(this.src)">
             </div>
 
             <div class="table-container">
@@ -646,7 +838,7 @@
             <h2>6. FRER Overhead Analysis</h2>
             <div class="graph-container">
                 <div class="graph-title">FRER Replication Overhead: TCP vs UDP</div>
-                <img src="../visualizations/frer_overhead.png" alt="FRER Overhead">
+                <img src="../visualizations/frer_overhead.png" alt="FRER Overhead" onclick="openModal(this.src)">
             </div>
 
             <div class="methodology">
@@ -666,7 +858,7 @@
                         <tr>
                             <th>Protocol</th>
                             <th>Theoretical</th>
-                            <th>Measured</th>
+                            <th>Measured (iperf3)</th>
                             <th>Overhead</th>
                             <th>Reason</th>
                         </tr>
@@ -703,38 +895,54 @@
 
         <!-- Test Methodology -->
         <div class="section">
-            <h2>7. Test Methodology</h2>
+            <h2>7. Test Methodology (테스트 방법론)</h2>
 
             <div class="methodology">
-                <h4>RFC 2544 Benchmarking</h4>
+                <h4>1. iperf3 Extended UDP Test</h4>
                 <ul>
-                    <li><strong>Throughput Test:</strong> Binary search algorithm for zero-loss maximum throughput</li>
-                    <li><strong>Loss Threshold:</strong> 0.001% (highly conservative)</li>
-                    <li><strong>Test Duration:</strong> 30 seconds per iteration</li>
-                    <li><strong>Frame Sizes:</strong> 64, 128, 256, 512, 1024, 1518 bytes</li>
-                    <li><strong>Latency Test:</strong> sockperf ping-pong with 60-second duration</li>
+                    <li><strong>목적:</strong> 실제 UDP 애플리케이션의 zero-loss throughput 측정</li>
+                    <li><strong>방법:</strong> Systematic sweep (400-950 Mbps, 50 Mbps 간격)</li>
+                    <li><strong>테스트 시간:</strong> 5초 per test (빠른 평가)</li>
+                    <li><strong>프레임 크기:</strong> 1472 bytes (1518 on wire)</li>
+                    <li><strong>결과:</strong> 520-540 Mbps zero-loss</li>
+                    <li><strong>한계:</strong> 짧은 테스트 시간, 표준 미준수, 정밀도 낮음</li>
                 </ul>
             </div>
 
             <div class="methodology">
-                <h4>Extended iperf3 Testing</h4>
+                <h4>2. RFC 2544 Benchmarking (iperf3 기반)</h4>
                 <ul>
-                    <li><strong>Systematic Sweep:</strong> 400-950 Mbps in 50 Mbps increments</li>
-                    <li><strong>Test Duration:</strong> 5 seconds per test (quick assessment)</li>
-                    <li><strong>Verification Tests:</strong> 30-second duration for marginal throughputs</li>
-                    <li><strong>Frame Size:</strong> 1472 bytes (1518 on wire with headers)</li>
-                    <li><strong>Loss Detection:</strong> Observed 0% actual loss vs 0.001% threshold</li>
+                    <li><strong>목적:</strong> 표준 준수 벤치마크 (공식 인증용)</li>
+                    <li><strong>방법:</strong> Binary search algorithm for zero-loss maximum throughput</li>
+                    <li><strong>Loss Threshold:</strong> 0.001% (매우 보수적)</li>
+                    <li><strong>테스트 시간:</strong> 30초 per iteration</li>
+                    <li><strong>프레임 크기:</strong> 64, 128, 256, 512, 1024, 1518 bytes</li>
+                    <li><strong>결과:</strong> 341 Mbps @ 1518 bytes</li>
+                    <li><strong>한계:</strong> 0.001% 임계값으로 인한 과도한 보수성, 실제보다 낮은 결과</li>
                 </ul>
             </div>
 
             <div class="methodology">
-                <h4>mausezahn Precision Testing</h4>
+                <h4>3. mausezahn Precision Testing</h4>
                 <ul>
-                    <li><strong>Packet Generation:</strong> Microsecond-level timing control</li>
+                    <li><strong>목적:</strong> 정밀 패킷 생성 및 프레임 크기별 특성 분석</li>
+                    <li><strong>방법:</strong> Microsecond-level timing control</li>
                     <li><strong>Load Levels:</strong> 50%, 70%, 80%, 90%, 95%, 98%, 100% of theoretical line rate</li>
-                    <li><strong>Test Duration:</strong> 10 seconds per test case</li>
+                    <li><strong>테스트 시간:</strong> 10초 per test case</li>
                     <li><strong>Total Tests:</strong> 42 (6 frame sizes × 7 load levels)</li>
-                    <li><strong>Total Packets:</strong> 133,937,500 packets transmitted</li>
+                    <li><strong>결과:</strong> 246 Mbps @ 1518 bytes (25% efficiency)</li>
+                    <li><strong>한계:</strong> 패킷 생성 도구의 성능 한계, 네트워크 용량 상한이 아님</li>
+                </ul>
+            </div>
+
+            <div class="methodology">
+                <h4>4. sockperf Latency Test</h4>
+                <ul>
+                    <li><strong>목적:</strong> Round-trip latency 및 지터 측정</li>
+                    <li><strong>방법:</strong> Ping-pong pattern</li>
+                    <li><strong>테스트 시간:</strong> 60초</li>
+                    <li><strong>프레임 크기:</strong> 64, 128, 256, 512, 1024, 1518 bytes</li>
+                    <li><strong>결과:</strong> 평균 53-109 μs, P99.9 < 338 μs</li>
                 </ul>
             </div>
         </div>
@@ -746,7 +954,7 @@
             <div class="highlight-box">
                 <h3>핵심 결론</h3>
                 <p>
-                    <strong>1. FRER 네트워크의 실제 UDP zero-loss throughput은 520-540 Mbps</strong><br>
+                    <strong>1. FRER 네트워크의 실제 UDP zero-loss throughput은 520-540 Mbps (iperf3 기준)</strong><br>
                     - RFC 2544 binary search (341 Mbps)보다 58% 높음<br>
                     - mausezahn (246 Mbps)은 도구의 한계이며 네트워크 용량이 아님<br><br>
 
@@ -758,9 +966,10 @@
                     - 평균: 53-109 μs<br>
                     - P99.9: 245-338 μs (대부분 < 300 μs)<br><br>
 
-                    <strong>4. FRER 이중화 오버헤드는 프로토콜에 따라 다름</strong><br>
-                    - TCP: 흐름 제어로 인해 최소 오버헤드 (6%)<br>
-                    - UDP: 흐름 제어 부재로 인해 높은 오버헤드 (47%)
+                    <strong>4. 테스트 도구 선택은 목적에 따라 달라야 함</strong><br>
+                    - 실제 성능: iperf3 (530 Mbps)<br>
+                    - 표준 준수: RFC 2544 (341 Mbps)<br>
+                    - 패킷 정밀도: mausezahn (프로토콜 검증용)
                 </p>
             </div>
 
@@ -774,6 +983,7 @@
                             <th>Protocol</th>
                             <th>Target Throughput</th>
                             <th>Safety Margin (80%)</th>
+                            <th>Note</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -782,24 +992,28 @@
                             <td>UDP</td>
                             <td>500-520 Mbps</td>
                             <td>400 Mbps</td>
+                            <td>iperf3 기준</td>
+                        </tr>
+                        <tr>
+                            <td>Standards compliance</td>
+                            <td>UDP</td>
+                            <td>341 Mbps</td>
+                            <td>270 Mbps</td>
+                            <td>RFC 2544 기준 (공식 인증)</td>
                         </tr>
                         <tr>
                             <td>Reliable data transfer</td>
                             <td>TCP</td>
                             <td>940 Mbps</td>
                             <td>750 Mbps</td>
+                            <td>흐름 제어 이점</td>
                         </tr>
                         <tr>
                             <td>Latency-critical apps</td>
                             <td>UDP</td>
                             <td>< 512 bytes frames</td>
                             <td>Keep P99.9 < 300 μs</td>
-                        </tr>
-                        <tr>
-                            <td>Standards compliance</td>
-                            <td>UDP</td>
-                            <td>341 Mbps (RFC 2544)</td>
-                            <td>270 Mbps</td>
+                            <td>TSN 요구사항</td>
                         </tr>
                     </tbody>
                 </table>
@@ -807,13 +1021,43 @@
 
             <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #334155;">성능 테스팅 도구 선택 가이드</h3>
 
-            <div class="methodology">
-                <ul>
-                    <li><strong>iperf3:</strong> 실제 애플리케이션 성능 평가 (권장: TCP/UDP 처리량 테스트)</li>
-                    <li><strong>RFC 2544 Binary Search:</strong> 표준 준수 벤치마크 (권장: 공식 인증 테스트)</li>
-                    <li><strong>mausezahn:</strong> 패킷 생성 정밀도 테스트 (권장: 프로토콜 검증, 타이밍 테스트)</li>
-                    <li><strong>sockperf:</strong> 레이턴시 및 지터 측정 (권장: TSN 레이턴시 요구사항 검증)</li>
-                </ul>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tool</th>
+                            <th>Best For</th>
+                            <th>Limitations</th>
+                            <th>Recommendation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>iperf3</strong></td>
+                            <td>실제 애플리케이션 성능 평가</td>
+                            <td>표준 미준수, 짧은 테스트 시간, 정밀도 낮음</td>
+                            <td>TCP/UDP 처리량 테스트에 권장</td>
+                        </tr>
+                        <tr>
+                            <td><strong>RFC 2544</strong></td>
+                            <td>표준 준수 벤치마크</td>
+                            <td>0.001% 임계값으로 인한 과도한 보수성</td>
+                            <td>공식 인증 테스트에 필수</td>
+                        </tr>
+                        <tr>
+                            <td><strong>mausezahn</strong></td>
+                            <td>정밀 패킷 생성 및 타이밍 제어</td>
+                            <td>도구의 성능 한계 (~246 Mbps)</td>
+                            <td>프로토콜 검증, 타이밍 테스트에만 사용</td>
+                        </tr>
+                        <tr>
+                            <td><strong>sockperf</strong></td>
+                            <td>레이턴시 및 지터 측정</td>
+                            <td>처리량 측정 불가</td>
+                            <td>TSN 레이턴시 요구사항 검증에 권장</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -918,7 +1162,7 @@
                         </tr>
                         <tr>
                             <td><strong>Total Test Duration</strong></td>
-                            <td>~60 minutes (all tests combined)</td>
+                            <td>~90 minutes (all tests combined)</td>
                         </tr>
                     </tbody>
                 </table>
@@ -931,5 +1175,35 @@
         <p>Test Date: 2025-10-20 | Microchip LAN9662 Platform</p>
         <p>Generated by Claude Code | <a href="https://github.com/hwkim3330/d10test" style="color: #2563eb;">GitHub Repository</a></p>
     </div>
+
+    <script>
+        // Image zoom functionality
+        function openModal(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImg.src = src;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+        }
+
+        // Close modal when clicking outside the image
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
 </body>
 </html>
