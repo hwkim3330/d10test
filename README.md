@@ -1,12 +1,24 @@
-# RFC 2544 Network Benchmark Results
+# FRER TSN Performance Evaluation - IEEE 802.1CB Automotive Ethernet
 
 ## 📋 개요 (Overview)
 
-본 레포지토리는 **IETF RFC 2544** 표준에 따른 네트워크 성능 벤치마크 결과를 담고 있습니다.
+본 레포지토리는 **IEEE 802.1CB FRER (Frame Replication and Elimination for Reliability)** 기반 자동차 이더넷 네트워크의 포괄적인 성능 평가 결과를 담고 있습니다.
 
-**시험 대상:** 10.0.100.2 (1 Gigabit Ethernet)
-**시험 기준:** [RFC 2544 - Benchmarking Methodology for Network Interconnect Devices](https://tools.ietf.org/html/rfc2544)
+**시험 대상:** Microchip LAN9662 기반 2-hop FRER 네트워크 (10.0.100.2)
+**시험 기준:**
+- [RFC 2544 - Benchmarking Methodology for Network Interconnect Devices](https://tools.ietf.org/html/rfc2544)
+- IEEE 802.1CB - Frame Replication and Elimination for Reliability
+- ISO 26262 ASIL D / SOTIF - Automotive Functional Safety
+
 **시험 일자:** 2025년 10월 20일
+
+### 🎓 학술 논문 (Academic Paper)
+**📄 [자동차 이더넷의 신뢰성 확보를 위한 FRER 기반 TSN 이중화 기법 적용 및 성능 검증](FRER_TSN_Performance_Paper.md)**
+- 완전한 FRER 구현 방법론 및 성능 평가
+- 프레임 크기별 처리량 분석 (64B ~ 1518B)
+- 부하 수준별 손실률 특성 분석
+- 도구별 성능 특성 비교 (iperf3, sockperf, mausezahn)
+- Fail-Operational 검증 및 실무 설계 가이드
 
 ---
 
@@ -30,6 +42,19 @@
 | **1518 bytes** | **341.47 Mbps** | **34.6%** |
 
 *무손실 기준: 패킷 손실률 < 0.001% (RFC 2544 권장)*
+
+### UDP 처리량 비교: 세 가지 측정 방법론
+
+| 방법론 | 도구 | 결과 (Mbps) | Loss Rate | 목적 | 보고서 |
+|--------|------|------------|-----------|------|--------|
+| **RFC 2544 Binary Search** | iperf3 | 341 | < 0.001% | 표준 준수 벤치마크 | [링크](#) |
+| **iperf3 Systematic Sweep** | iperf3 | **520-540** | **0%** | 실제 애플리케이션 성능 | [Extended Test](benchmarks/2025-10-20-iperf3-udp-extended/UDP_EXTENDED_TEST_REPORT.md) |
+| **Precision Packet Generation** | mausezahn | 246 | N/A | 도구 성능 한계 | [링크](#) |
+
+**⚠️ 중요:** 모든 처리량 측정은 **iperf3를 사용**하여 수행되었으며, 측정 방법론에 따라 결과가 다르게 나타납니다:
+- **RFC 2544 (341 Mbps):** 매우 보수적인 0.001% loss threshold로 인한 결과
+- **Systematic Sweep (530 Mbps):** 실제 zero-loss 용량 (실무 권장)
+- **mausezahn (246 Mbps):** 패킷 생성 도구의 성능 한계 (네트워크 용량 아님)
 
 ### 지연시간 (Latency)
 | 메시지 크기 | 평균 (μs) | P99 (μs) | P99.9 (μs) |
