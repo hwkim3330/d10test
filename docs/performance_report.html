@@ -130,7 +130,7 @@
             margin-bottom: 1rem;
         }
 
-        /* Modal for image zoom */
+        /* Enhanced Modal for image zoom + explanation */
         .modal {
             display: none;
             position: fixed;
@@ -139,37 +139,131 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: rgba(0, 0, 0, 0.95);
             overflow: auto;
         }
 
-        .modal-content {
-            margin: auto;
-            display: block;
-            max-width: 95%;
-            max-height: 95vh;
-            animation: zoom 0.3s;
+        .modal-container {
+            display: flex;
+            width: 95%;
+            max-width: 1800px;
+            margin: 2rem auto;
+            gap: 2rem;
+            animation: slideIn 0.4s ease-out;
         }
 
-        @keyframes zoom {
-            from {transform: scale(0.7)}
-            to {transform: scale(1)}
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-image-panel {
+            flex: 0 0 60%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-explanation-panel {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-explanation-panel h2 {
+            color: #1e293b;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 0.5rem;
+        }
+
+        .modal-explanation-panel h3 {
+            color: #475569;
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .modal-explanation-panel p {
+            color: #334155;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .modal-explanation-panel ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .modal-explanation-panel li {
+            color: #334155;
+            line-height: 1.8;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-explanation-panel .highlight {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .modal-explanation-panel .key-insight {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left: 4px solid #2563eb;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 6px;
         }
 
         .close {
-            position: absolute;
-            top: 20px;
-            right: 40px;
+            position: fixed;
+            top: 30px;
+            right: 50px;
             color: #f1f1f1;
-            font-size: 50px;
+            font-size: 60px;
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
+            z-index: 1001;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .close:hover,
         .close:focus {
-            color: #bbb;
+            color: #ef4444;
+            transform: scale(1.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .modal-container {
+                flex-direction: column;
+            }
+            .modal-image-panel {
+                flex: 1;
+            }
+            .modal-explanation-panel {
+                flex: 1;
+            }
         }
 
         .table-container {
@@ -359,10 +453,17 @@
     </style>
 </head>
 <body>
-    <!-- Image Modal -->
+    <!-- Image Modal with Explanation Panel -->
     <div id="imageModal" class="modal">
         <span class="close" onclick="closeModal()">&times;</span>
-        <img class="modal-content" id="modalImage">
+        <div class="modal-container">
+            <div class="modal-image-panel">
+                <img class="modal-content" id="modalImage">
+            </div>
+            <div class="modal-explanation-panel" id="modalExplanation">
+                <!-- Explanation content will be inserted by JavaScript -->
+            </div>
+        </div>
     </div>
 
     <div class="header">
@@ -436,7 +537,7 @@
             <h2>1. Network Topology</h2>
             <div class="graph-container">
                 <div class="graph-title">IEEE 802.1CB FRER 2-Hop Architecture</div>
-                <img src="../visualizations/network_topology.png" alt="Network Topology" onclick="openModal(this.src)">
+                <img src="../visualizations/network_topology.png" alt="Network Topology" onclick="openModal(this.src, 'network_topology')">
             </div>
 
             <div class="methodology">
@@ -466,7 +567,7 @@
 
             <div class="graph-container">
                 <div class="graph-title">UDP Throughput Sweep: 400-950 Mbps (Zero-Loss Detection)</div>
-                <img src="../visualizations/udp_loss_curve.png" alt="UDP Loss Curve" onclick="openModal(this.src)">
+                <img src="../visualizations/udp_loss_curve.png" alt="UDP Loss Curve" onclick="openModal(this.src, 'udp_loss_curve')">
             </div>
 
             <div class="table-container">
@@ -600,7 +701,7 @@
             <h2>3. Tool Comparison Analysis (테스트 도구 비교)</h2>
             <div class="graph-container">
                 <div class="graph-title">Performance Comparison: iperf3 vs RFC 2544 vs mausezahn</div>
-                <img src="../visualizations/tool_comparison.png" alt="Tool Comparison" onclick="openModal(this.src)">
+                <img src="../visualizations/tool_comparison.png" alt="Tool Comparison" onclick="openModal(this.src, 'tool_comparison')">
             </div>
 
             <div class="table-container">
@@ -688,7 +789,7 @@
             <h2>4. Frame Size Analysis (mausezahn 기반)</h2>
             <div class="graph-container">
                 <div class="graph-title">Throughput and Efficiency vs Frame Size</div>
-                <img src="../visualizations/frame_size_analysis.png" alt="Frame Size Analysis" onclick="openModal(this.src)">
+                <img src="../visualizations/frame_size_analysis.png" alt="Frame Size Analysis" onclick="openModal(this.src, 'frame_size_analysis')">
             </div>
 
             <div class="table-container">
@@ -765,7 +866,7 @@
             <h2>5. Latency Distribution (sockperf 기반)</h2>
             <div class="graph-container">
                 <div class="graph-title">Round-Trip Latency by Frame Size (Average, P99, P99.9)</div>
-                <img src="../visualizations/latency_distribution.png" alt="Latency Distribution" onclick="openModal(this.src)">
+                <img src="../visualizations/latency_distribution.png" alt="Latency Distribution" onclick="openModal(this.src, 'latency_distribution')">
             </div>
 
             <div class="table-container">
@@ -838,7 +939,7 @@
             <h2>6. FRER Overhead Analysis</h2>
             <div class="graph-container">
                 <div class="graph-title">FRER Replication Overhead: TCP vs UDP</div>
-                <img src="../visualizations/frer_overhead.png" alt="FRER Overhead" onclick="openModal(this.src)">
+                <img src="../visualizations/frer_overhead.png" alt="FRER Overhead" onclick="openModal(this.src, 'frer_overhead')">
             </div>
 
             <div class="methodology">
@@ -1177,12 +1278,294 @@
     </div>
 
     <script>
-        // Image zoom functionality
-        function openModal(src) {
+        // Graph explanations object
+        const graphExplanations = {
+            'network_topology': {
+                title: 'Network Topology',
+                content: `
+                    <h3>📋 그래프 설명</h3>
+                    <p>이 다이어그램은 IEEE 802.1CB FRER 네트워크의 물리적 및 논리적 구조를 보여줍니다. Talker (10.0.100.1)에서 시작된 프레임이 Switch 1에서 이중화되어 두 개의 독립적인 경로(Port 1, Port 2)를 통해 Switch 2로 전송되며, 최종적으로 Listener (10.0.100.2)에서 중복 제거되는 과정을 시각화합니다.</p>
+
+                    <h3>🔬 주요 구성 요소</h3>
+                    <ul>
+                        <li><strong>Talker (10.0.100.1):</strong> 프레임 생성 및 전송 시작점</li>
+                        <li><strong>Switch 1 (LAN9662):</strong> 프레임 복제 수행 (Frame Replication)</li>
+                        <li><strong>Dual Path:</strong> Port 1과 Port 2를 통한 독립적 이중 경로</li>
+                        <li><strong>Switch 2 (LAN9662):</strong> 이중화된 프레임 수신 및 전달</li>
+                        <li><strong>Listener (10.0.100.2):</strong> 중복 프레임 제거 (Frame Elimination)</li>
+                    </ul>
+
+                    <h3>💡 핵심 인사이트</h3>
+                    <div class="key-insight">
+                        <p><strong>FRER의 핵심 원리:</strong> 단일 프레임이 두 개의 독립적인 경로로 복제되어 전송되므로, 한 경로에 장애가 발생해도 다른 경로를 통해 프레임이 정상 전달됩니다. 이는 automotive Ethernet과 산업 자동화 같은 고신뢰성 환경에서 필수적인 Fail-Operational 능력을 제공합니다.</p>
+                    </div>
+
+                    <h3>🎯 실무 적용</h3>
+                    <p><strong>설계 시 고려사항:</strong></p>
+                    <ul>
+                        <li>두 경로는 물리적으로 독립적이어야 함 (단일 장애 지점 제거)</li>
+                        <li>Switch 버퍼 용량은 이중화 트래픽을 고려하여 설계</li>
+                        <li>R-TAG (EtherType 0xF1C1) 처리를 위한 하드웨어 지원 필요</li>
+                        <li>Listener의 sequence number 기반 중복 제거 로직 구현 필수</li>
+                    </ul>
+                `
+            },
+            'udp_loss_curve': {
+                title: 'UDP Loss Curve',
+                content: `
+                    <h3>📋 그래프 설명</h3>
+                    <p>이 그래프는 400-950 Mbps 범위에서 UDP throughput과 packet loss rate의 관계를 보여줍니다. iperf3를 사용하여 5초 간격으로 50 Mbps씩 증가시키며 측정한 결과로, <span class="highlight">zero-loss 경계가 520-540 Mbps</span>임을 명확히 보여줍니다.</p>
+
+                    <h3>📐 축 설명</h3>
+                    <ul>
+                        <li><strong>X축:</strong> Target Throughput (Mbps) - 400부터 950까지 50 Mbps 간격</li>
+                        <li><strong>Y축 (좌측):</strong> Actual Throughput (Mbps) - 실제 측정된 처리량</li>
+                        <li><strong>Y축 (우측):</strong> Loss Rate (%) - 패킷 손실률 (0-3.5%)</li>
+                    </ul>
+
+                    <h3>📊 주요 데이터 포인트</h3>
+                    <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                        <tr style="background: #dcfce7;"><td>400-540 Mbps</td><td>0.00% loss</td><td>✓ Zero-Loss Zone</td></tr>
+                        <tr style="background: #fef3c7;"><td>550 Mbps</td><td>0.24-0.56% loss</td><td>⚠ Marginal Loss</td></tr>
+                        <tr style="background: #fee2e2;"><td>600+ Mbps</td><td>1-3% loss</td><td>✗ High Loss</td></tr>
+                    </table>
+
+                    <h3>💡 핵심 인사이트</h3>
+                    <div class="key-insight">
+                        <p><strong>540 Mbps가 실제 zero-loss 경계입니다.</strong> RFC 2544 binary search가 341 Mbps의 보수적 결과를 냈지만, 직접 측정 결과 <span class="highlight">실제 네트워크는 58% 더 높은 용량</span>을 가지고 있습니다. 이는 0.001% loss threshold의 과도한 보수성 때문입니다.</p>
+                    </div>
+
+                    <h3>🎯 실무 적용</h3>
+                    <p><strong>용량 계획 권장사항:</strong></p>
+                    <ul>
+                        <li><strong>Conservative (공식 인증):</strong> 341 Mbps (RFC 2544 기준)</li>
+                        <li><strong>Realistic (실제 운영):</strong> 500 Mbps (안전 마진 포함)</li>
+                        <li><strong>Peak (단기 버스트):</strong> 540 Mbps (zero-loss 상한)</li>
+                        <li><strong>Avoid:</strong> 550 Mbps 이상 (손실 발생 시작)</li>
+                    </ul>
+                `
+            },
+            'tool_comparison': {
+                title: 'Tool Comparison',
+                content: `
+                    <h3>📋 그래프 설명</h3>
+                    <p>세 가지 측정 도구(iperf3, RFC 2544, mausezahn)의 throughput 측정 결과를 비교합니다. 동일한 FRER 네트워크에서 <span class="highlight">도구에 따라 246 Mbps부터 941 Mbps까지 다양한 결과</span>가 나타나며, 이는 각 도구의 목적과 한계를 이해하는 것이 중요함을 보여줍니다.</p>
+
+                    <h3>📊 도구별 측정 결과</h3>
+                    <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                        <tr><th>Tool</th><th>Protocol</th><th>Result</th><th>Purpose</th></tr>
+                        <tr style="background: #dbeafe;"><td>iperf3</td><td>TCP</td><td>941 Mbps</td><td>신뢰성 있는 전송 (흐름 제어)</td></tr>
+                        <tr style="background: #dcfce7;"><td>iperf3 Extended</td><td>UDP</td><td>520-540 Mbps</td><td>실제 UDP 성능</td></tr>
+                        <tr><td>RFC 2544</td><td>UDP</td><td>341 Mbps</td><td>표준 준수 (공식 인증)</td></tr>
+                        <tr style="background: #fee2e2;"><td>mausezahn</td><td>UDP</td><td>246 Mbps</td><td>패킷 생성 정밀도</td></tr>
+                    </table>
+
+                    <h3>💡 핵심 인사이트</h3>
+                    <div class="key-insight">
+                        <p><strong>도구 선택이 결과를 결정합니다:</strong></p>
+                        <ul>
+                            <li><strong>iperf3 vs RFC 2544 (58% 차이):</strong> 0.001% threshold의 과도한 보수성</li>
+                            <li><strong>iperf3 vs mausezahn (117% 차이):</strong> 패킷 생성 도구의 성능 한계</li>
+                            <li><strong>TCP vs UDP (77% 차이):</strong> FRER 환경에서 흐름 제어의 이점</li>
+                        </ul>
+                    </div>
+
+                    <h3>🔬 성능 차이 원인</h3>
+                    <p><strong>왜 iperf3가 mausezahn보다 2배 빠를까?</strong></p>
+                    <ul>
+                        <li><strong>iperf3:</strong> Bulk transfer 최적화, sendmmsg() syscall, 커널 소켓 버퍼</li>
+                        <li><strong>mausezahn:</strong> Per-packet crafting, μs-level timing, user-space buffering</li>
+                        <li><strong>결론:</strong> mausezahn 246 Mbps는 도구 한계이지 네트워크 용량이 아님</li>
+                    </ul>
+
+                    <h3>🎯 실무 적용</h3>
+                    <p><strong>테스트 목적별 도구 선택 가이드:</strong></p>
+                    <ul>
+                        <li><strong>실제 성능 평가:</strong> iperf3 (530 Mbps UDP, 941 Mbps TCP)</li>
+                        <li><strong>표준 인증:</strong> RFC 2544 (341 Mbps, 공식 문서용)</li>
+                        <li><strong>프로토콜 검증:</strong> mausezahn (패킷 타이밍 제어)</li>
+                        <li><strong>레이턴시 측정:</strong> sockperf (53-109 μs)</li>
+                    </ul>
+                `
+            },
+            'frame_size_analysis': {
+                title: 'Frame Size Analysis',
+                content: `
+                    <h3>📋 그래프 설명</h3>
+                    <p>프레임 크기(64B-1518B)에 따른 throughput과 line rate efficiency를 분석합니다. mausezahn으로 측정한 결과, <span class="highlight">모든 프레임 크기에서 일관되게 25% efficiency</span>를 보이며, 이는 도구의 성능 한계를 나타냅니다.</p>
+
+                    <h3>📐 축 설명</h3>
+                    <ul>
+                        <li><strong>X축:</strong> Frame Size (bytes) - 64, 128, 256, 512, 1024, 1518</li>
+                        <li><strong>Y축 (좌측):</strong> Throughput (Mbps) - 실제 측정값 및 이론값</li>
+                        <li><strong>Y축 (우측):</strong> Line Rate Efficiency (%) - 이론 대비 효율</li>
+                    </ul>
+
+                    <h3>📊 프레임 크기별 데이터</h3>
+                    <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                        <tr><th>Frame Size</th><th>Theoretical</th><th>mausezahn</th><th>Efficiency</th></tr>
+                        <tr><td>64 bytes</td><td>762 Mbps</td><td>190 Mbps</td><td>25.0%</td></tr>
+                        <tr><td>256 bytes</td><td>928 Mbps</td><td>232 Mbps</td><td>25.0%</td></tr>
+                        <tr><td>512 bytes</td><td>962 Mbps</td><td>240 Mbps</td><td>25.0%</td></tr>
+                        <tr style="background: #fef3c7;"><td>1518 bytes</td><td>987 Mbps</td><td>247 Mbps</td><td>25.0%</td></tr>
+                    </table>
+
+                    <h3>⚠️ 중요한 발견</h3>
+                    <div class="key-insight">
+                        <p><strong>이 결과는 네트워크 용량이 아닌 mausezahn의 한계입니다:</strong></p>
+                        <ul>
+                            <li>모든 프레임 크기에서 동일한 25% efficiency = 도구 bottleneck</li>
+                            <li>실제 네트워크 용량은 iperf3로 확인: 530 Mbps (53%)</li>
+                            <li>mausezahn은 μs-level packet timing 제어가 목적</li>
+                            <li>Throughput 측정에는 iperf3 사용 권장</li>
+                        </ul>
+                    </div>
+
+                    <h3>🔬 Ethernet 오버헤드 분석</h3>
+                    <p>프레임 크기가 작을수록 오버헤드 비율이 증가합니다:</p>
+                    <ul>
+                        <li><strong>64B:</strong> Payload 46B + Overhead 18B = 28% 오버헤드</li>
+                        <li><strong>1518B:</strong> Payload 1500B + Overhead 18B = 1.2% 오버헤드</li>
+                        <li><strong>결론:</strong> 큰 프레임이 bandwidth efficiency에 유리</li>
+                    </ul>
+
+                    <h3>🎯 실무 적용</h3>
+                    <p><strong>프레임 크기 선택 가이드:</strong></p>
+                    <ul>
+                        <li><strong>High throughput 필요:</strong> 1518B (최대 효율)</li>
+                        <li><strong>Low latency 필요:</strong> 64-256B (전송 시간 최소화)</li>
+                        <li><strong>Automotive:</strong> 256-512B (latency와 throughput 균형)</li>
+                        <li><strong>Industrial:</strong> 512-1024B (주기적 대용량 데이터)</li>
+                    </ul>
+                `
+            },
+            'latency_distribution': {
+                title: 'Latency Distribution',
+                content: `
+                    <h3>📋 그래프 설명</h3>
+                    <p>프레임 크기별 round-trip latency 분포를 보여줍니다. sockperf로 60초간 측정한 결과, <span class="highlight">평균 53-109 μs, P99.9 최대 338 μs</span>로 TSN 요구사항(< 300 μs)을 대부분 충족합니다.</p>
+
+                    <h3>📐 축 설명</h3>
+                    <ul>
+                        <li><strong>X축:</strong> Frame Size (bytes) - 64, 128, 256, 512, 1024, 1518</li>
+                        <li><strong>Y축:</strong> Round-Trip Latency (μs) - 평균, P99, P99.9 백분위수</li>
+                    </ul>
+
+                    <h3>📊 레이턴시 백분위수 데이터</h3>
+                    <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                        <tr><th>Frame Size</th><th>Average</th><th>P99</th><th>P99.9</th><th>TSN</th></tr>
+                        <tr style="background: #dcfce7;"><td>64 bytes</td><td>53.25 μs</td><td>186 μs</td><td>246 μs</td><td>✓ Pass</td></tr>
+                        <tr style="background: #dcfce7;"><td>256 bytes</td><td>72.43 μs</td><td>223 μs</td><td>283 μs</td><td>✓ Pass</td></tr>
+                        <tr style="background: #dcfce7;"><td>512 bytes</td><td>84.56 μs</td><td>242 μs</td><td>301 μs</td><td>⚠ Marginal</td></tr>
+                        <tr style="background: #fef3c7;"><td>1518 bytes</td><td>109.34 μs</td><td>278 μs</td><td>338 μs</td><td>⚠ Marginal</td></tr>
+                    </table>
+
+                    <h3>💡 핵심 인사이트</h3>
+                    <div class="key-insight">
+                        <p><strong>TSN 레이턴시 요구사항 충족:</strong></p>
+                        <ul>
+                            <li>64-256B: P99.9이 300 μs 이하로 완전 충족</li>
+                            <li>512-1518B: P99.9이 300-338 μs로 소폭 초과하지만 acceptable</li>
+                            <li>평균 레이턴시는 모든 프레임에서 110 μs 이하로 매우 우수</li>
+                            <li><strong>결론:</strong> Automotive Ethernet 적용 가능</li>
+                        </ul>
+                    </div>
+
+                    <h3>🔬 레이턴시 증가 원인</h3>
+                    <p>프레임 크기가 커질수록 레이턴시가 증가하는 이유:</p>
+                    <ul>
+                        <li><strong>Transmission Delay:</strong> 1518B는 64B보다 12 μs 더 오래 걸림</li>
+                        <li><strong>FRER Processing:</strong> 큰 프레임의 R-TAG 처리 시간</li>
+                        <li><strong>Buffer Queuing:</strong> 큰 프레임으로 인한 큐 대기 시간</li>
+                        <li><strong>Switch Processing:</strong> Payload parsing 및 forwarding 시간</li>
+                    </ul>
+
+                    <h3>🎯 실무 적용</h3>
+                    <p><strong>레이턴시 SLA 설계 가이드:</strong></p>
+                    <ul>
+                        <li><strong>Ultra-low latency (< 100 μs):</strong> 64-256B 프레임 사용</li>
+                        <li><strong>Standard TSN (< 300 μs):</strong> 512B까지 허용 (P99.9 기준)</li>
+                        <li><strong>Best-effort (< 500 μs):</strong> 1518B 허용</li>
+                        <li><strong>Safety Margin:</strong> P99.9 기준 20% 여유 확보 권장</li>
+                    </ul>
+                `
+            },
+            'frer_overhead': {
+                title: 'FRER Overhead',
+                content: `
+                    <h3>📋 그래프 설명</h3>
+                    <p>FRER 이중화로 인한 오버헤드를 TCP와 UDP로 비교합니다. 이론상 1 GbE 용량 대비 <span class="highlight">TCP는 6% 오버헤드, UDP는 47% 오버헤드</span>를 보이며, 이는 흐름 제어 유무에 따른 극명한 차이를 보여줍니다.</p>
+
+                    <h3>📊 FRER 오버헤드 비교</h3>
+                    <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                        <tr><th>Metric</th><th>TCP</th><th>UDP</th><th>차이</th></tr>
+                        <tr><td>Theoretical Max</td><td>1000 Mbps</td><td>1000 Mbps</td><td>-</td></tr>
+                        <tr style="background: #dbeafe;"><td>Measured (iperf3)</td><td>941 Mbps</td><td>530 Mbps</td><td>411 Mbps</td></tr>
+                        <tr style="background: #dcfce7;"><td>Efficiency</td><td>94.1%</td><td>53.0%</td><td>41.1%</td></tr>
+                        <tr style="background: #fee2e2;"><td>FRER Overhead</td><td>5.9%</td><td>47.0%</td><td>41.1%</td></tr>
+                    </table>
+
+                    <h3>💡 핵심 인사이트</h3>
+                    <div class="key-insight">
+                        <p><strong>UDP가 TCP보다 8배 높은 오버헤드를 갖는 이유:</strong></p>
+                        <ul>
+                            <li><strong>흐름 제어 부재:</strong> UDP는 버퍼 상태에 적응하지 못함</li>
+                            <li><strong>재전송 불가:</strong> 손실 프레임은 영구 손실</li>
+                            <li><strong>FRER 복제 경쟁:</strong> 두 경로의 프레임이 버퍼를 놓고 경쟁</li>
+                            <li><strong>버퍼 압력:</strong> 신뢰할 수 없는 트래픽으로 인한 오버플로우</li>
+                        </ul>
+                    </div>
+
+                    <h3>🔬 FRER 오버헤드 구성 요소</h3>
+                    <p>FRER 오버헤드는 다음 요소로 구성됩니다:</p>
+                    <ul>
+                        <li><strong>Frame Replication (Switch 1):</strong> 각 프레임을 Port 1, 2로 복제</li>
+                        <li><strong>R-TAG Processing:</strong> 시퀀스 번호 태깅 (6 bytes)</li>
+                        <li><strong>Dual Path Bandwidth:</strong> 두 경로에서 동시 대역폭 소비</li>
+                        <li><strong>Frame Elimination (Listener):</strong> 중복 제거 처리 비용</li>
+                        <li><strong>Buffer Management:</strong> 이중화 트래픽으로 인한 버퍼 압력</li>
+                    </ul>
+
+                    <h3>⚠️ UDP에서 높은 오버헤드의 의미</h3>
+                    <p>UDP 47% 오버헤드는 다음을 의미합니다:</p>
+                    <ul>
+                        <li>실제 사용 가능 용량은 530 Mbps (이론의 53%)</li>
+                        <li>High-rate UDP 스트림은 FRER 환경에 부적합</li>
+                        <li>TCP나 rate-limited UDP 사용 권장</li>
+                        <li>UDP 사용 시 500 Mbps 이하로 rate limit 필수</li>
+                    </ul>
+
+                    <h3>🎯 실무 적용</h3>
+                    <p><strong>프로토콜 선택 가이드:</strong></p>
+                    <ul>
+                        <li><strong>High throughput (> 600 Mbps):</strong> TCP 사용 (941 Mbps)</li>
+                        <li><strong>Real-time UDP (< 500 Mbps):</strong> Rate limiting 필수</li>
+                        <li><strong>Best practice:</strong> 측정 용량의 80% 이하로 운영</li>
+                        <li><strong>TCP: 750 Mbps, UDP: 400 Mbps 권장 운영점</strong></li>
+                    </ul>
+                `
+            }
+        };
+
+        // Enhanced image zoom functionality with explanations
+        function openModal(src, graphId) {
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImage');
+            const modalExplanation = document.getElementById('modalExplanation');
+
             modal.style.display = 'block';
             modalImg.src = src;
+
+            // Display graph-specific explanation
+            if (graphId && graphExplanations[graphId]) {
+                const explanation = graphExplanations[graphId];
+                modalExplanation.innerHTML = `
+                    <h2>${explanation.title}</h2>
+                    ${explanation.content}
+                `;
+            } else {
+                modalExplanation.innerHTML = '<h2>그래프 설명</h2><p>이 그래프에 대한 상세 설명이 준비 중입니다.</p>';
+            }
         }
 
         function closeModal() {
@@ -1190,7 +1573,7 @@
             modal.style.display = 'none';
         }
 
-        // Close modal when clicking outside the image
+        // Close modal when clicking outside the container
         window.onclick = function(event) {
             const modal = document.getElementById('imageModal');
             if (event.target == modal) {
