@@ -3,8 +3,11 @@
 > **🌐 GitHub Pages:** [https://hwkim3330.github.io/d10test/](https://hwkim3330.github.io/d10test/)
 >
 > **📊 Interactive Reports:**
-> - [FRER vs Control Comparison](https://hwkim3330.github.io/d10test/docs/frer_vs_control_comparison.html) ⭐ **NEW!**
-> - [Performance Report](https://hwkim3330.github.io/d10test/docs/performance_report.html)
+> - [🔬 TSN Performance Analysis - WHY FRER Wins?](https://hwkim3330.github.io/d10test/tsn_performance_analysis.html) ⭐ **NEW! Academic-Level Technical Explanation**
+> - [FRER vs Control Comparison](https://hwkim3330.github.io/d10test/frer_vs_control_comparison.html)
+> - [Performance Report](https://hwkim3330.github.io/d10test/performance_report.html)
+>
+> **🌍 [English Version](README_EN.md)**
 
 ---
 
@@ -17,7 +20,9 @@
 
 **Root Cause:** FRER path has properly configured TSN queue management (CBS, TAS) while direct path uses standard best-effort Ethernet.
 
-**👉 [View Interactive Comparison Report](https://hwkim3330.github.io/d10test/docs/frer_vs_control_comparison.html)** ← **Click to see live charts!**
+**👉 [View Interactive Comparison Report](https://hwkim3330.github.io/d10test/frer_vs_control_comparison.html)** ← **Click to see live charts!**
+
+**🔬 [WHY Does FRER Win? - Read Technical Analysis](https://hwkim3330.github.io/d10test/tsn_performance_analysis.html)** ← **Academic paper-level explanation!**
 
 ---
 
@@ -36,7 +41,17 @@
 ### 📊 보고서 및 문서 (Reports & Documentation)
 
 #### 🆕 **인터랙티브 HTML 보고서 (Interactive Reports)**
-1. **📊 [FRER vs Control Group - Comprehensive Comparison](https://hwkim3330.github.io/d10test/docs/frer_vs_control_comparison.html)** ⭐ **NEW!**
+1. **🔬 [TSN Performance Analysis - WHY FRER Wins?](https://hwkim3330.github.io/d10test/tsn_performance_analysis.html)** ⭐ **NEW!**
+   - **왜 FRER이 33% 더 빠른지 논문급 기술 분석**
+   - TSN queue management 심층 분석 (CBS, TAS, 우선순위 큐)
+   - Buffer 관리 메커니즘 비교
+   - 프레임 크기별 영향 분석 (64B catastrophe 원인)
+   - **4개 인터랙티브 Chart.js 그래프**
+   - 자동차 이더넷 use case 적용 가이드
+   - 🎓 Academic paper quality, 실무 설계 권고사항
+   - 📄 [Source](docs/tsn_performance_analysis.html)
+
+2. **📊 [FRER vs Control Group - Comprehensive Comparison](https://hwkim3330.github.io/d10test/frer_vs_control_comparison.html)**
    - **Control group experiment 결과 종합**
    - FRER와 직접 연결 성능 비교 (side-by-side)
    - **인터랙티브 Chart.js 차트 3개:** UDP 처리량, 지연시간, 손실률
@@ -45,7 +60,7 @@
    - 🎨 Beautiful gradient design, mobile-responsive
    - 📄 [Source](docs/frer_vs_control_comparison.html)
 
-2. **🎨 [FRER Performance Report - Interactive Graphs](https://hwkim3330.github.io/d10test/docs/performance_report.html)**
+3. **🎨 [FRER Performance Report - Interactive Graphs](https://hwkim3330.github.io/d10test/performance_report.html)**
    - **클릭 가능한 그래프** (확대 + 상세 설명 표시)
    - FRER 네트워크 토폴로지 다이어그램
    - 프레임 크기별 분석, 지연시간 분포
@@ -336,8 +351,9 @@ d10test/
 
 ### 🌐 **Live Interactive Reports (GitHub Pages)**
 - **[🏠 Main Page](https://hwkim3330.github.io/d10test/)** - GitHub Pages 메인
-- **[📊 FRER vs Control Comparison](https://hwkim3330.github.io/d10test/docs/frer_vs_control_comparison.html)** ⭐ **33% 성능 우위 발견!**
-- **[📈 Performance Report](https://hwkim3330.github.io/d10test/docs/performance_report.html)** - 클릭 가능한 인터랙티브 그래프
+- **[🔬 TSN Performance Analysis](https://hwkim3330.github.io/d10test/tsn_performance_analysis.html)** ⭐ **왜 FRER이 33% 더 빠른지 논문급 기술 분석!**
+- **[📊 FRER vs Control Comparison](https://hwkim3330.github.io/d10test/frer_vs_control_comparison.html)** - 33% 성능 우위 발견
+- **[📈 Performance Report](https://hwkim3330.github.io/d10test/performance_report.html)** - 클릭 가능한 인터랙티브 그래프
 
 ### 📄 **Documentation**
 - **[FRER Throughput Limitations Paper (EN)](FRER_Throughput_Limitations_Paper.md)** - 6,200+ words
