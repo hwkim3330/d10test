@@ -1,32 +1,78 @@
 # FRER TSN Performance Evaluation - IEEE 802.1CB Automotive Ethernet
 
+## 🔬 CRITICAL FINDING: FRER Provides 33% Better UDP Performance!
+
+**Breaking Discovery (2025-10-23):** Control group experiment revealed unexpected results:
+- **FRER-enabled network: 530 Mbps UDP zero-loss**
+- **Direct connection (no FRER): 398 Mbps UDP zero-loss**
+- **FRER Advantage: +33.2%** (not overhead, but improvement!)
+
+**Root Cause:** FRER path has properly configured TSN queue management (CBS, TAS) while direct path uses standard best-effort Ethernet.
+
+**📊 [View Comprehensive Comparison Report (HTML)](docs/frer_vs_control_comparison.html)** ← **NEW!**
+
+---
+
 ## 📋 개요 (Overview)
 
 본 레포지토리는 **IEEE 802.1CB FRER (Frame Replication and Elimination for Reliability)** 기반 자동차 이더넷 네트워크의 포괄적인 성능 평가 결과를 담고 있습니다.
 
-**시험 대상:** Microchip LAN9662 기반 2-hop FRER 네트워크 (10.0.100.2)
+**시험 대상:** Microchip LAN9668 (Kontron D10) 기반 2-hop FRER 네트워크
 **시험 기준:**
 - [RFC 2544 - Benchmarking Methodology for Network Interconnect Devices](https://tools.ietf.org/html/rfc2544)
 - IEEE 802.1CB - Frame Replication and Elimination for Reliability
 - ISO 26262 ASIL D / SOTIF - Automotive Functional Safety
 
-**시험 일자:** 2025년 10월 20일
+**시험 일자:** 2025년 10월 20-23일
 
-### 🎓 학술 논문 (Academic Paper)
-**📄 [자동차 이더넷의 신뢰성 확보를 위한 FRER 기반 TSN 이중화 기법 적용 및 성능 검증](FRER_TSN_Performance_Paper.md)**
-- 완전한 FRER 구현 방법론 및 성능 평가
-- 프레임 크기별 처리량 분석 (64B ~ 1518B)
-- 부하 수준별 손실률 특성 분석
-- 도구별 성능 특성 비교 (iperf3, sockperf, mausezahn)
-- Fail-Operational 검증 및 실무 설계 가이드
+### 📊 보고서 및 문서 (Reports & Documentation)
 
-### 📊 그래프 상세 설명 (Graph Explanations)
-**📈 [성능 분석 그래프 상세 설명](GRAPH_EXPLANATIONS.md)**
-- **9개 그래프 각각에 대한 완전한 설명**
-- X축/Y축 의미, 데이터 포인트, 주요 트렌드
-- 핵심 인사이트 및 실무 적용 방안
-- 시나리오별 그래프 선택 가이드
-- SLA 설계, 용량 계획, 프레임 크기 선택 등 실전 예시
+#### 🆕 **종합 비교 보고서 (NEW!)**
+**📊 [FRER vs Control Group - Interactive Comparison (HTML)](docs/frer_vs_control_comparison.html)**
+- **Control group experiment 결과 종합**
+- FRER와 직접 연결 성능 비교 (side-by-side)
+- 인터랙티브 차트: UDP 처리량, 지연시간, 손실률
+- TSN queue 설정의 중요성 분석
+- **핵심 발견:** FRER이 33% 더 나은 UDP 성능 제공
+
+#### 🎓 **학술 논문 (Academic Papers)**
+1. **📄 [FRER Throughput Limitations - Empirical Analysis (English)](FRER_Throughput_Limitations_Paper.md)**
+   - Platform: Microchip LAN9668 (Kontron D10)
+   - Zero-loss threshold: 530-535 Mbps
+   - Buffer saturation analysis
+   - **6,200+ words, peer-review ready**
+
+2. **📄 [자동차 이더넷의 신뢰성 확보를 위한 FRER 기반 TSN 이중화 기법 (Korean)](FRER_TSN_Performance_Paper.md)**
+   - 완전한 FRER 구현 방법론 및 성능 평가
+   - 프레임 크기별 처리량 분석 (64B ~ 1518B)
+   - 부하 수준별 손실률 특성 분석
+   - Fail-Operational 검증 및 실무 설계 가이드
+
+#### 📊 **그래프 및 시각화**
+1. **📈 [성능 분석 그래프 상세 설명](GRAPH_EXPLANATIONS.md)**
+   - **9개 그래프 각각에 대한 완전한 설명**
+   - X축/Y축 의미, 데이터 포인트, 주요 트렌드
+   - 핵심 인사이트 및 실무 적용 방안
+   - SLA 설계, 용량 계획, 프레임 크기 선택 등 실전 예시
+
+2. **🎨 [Interactive Performance Report (HTML)](docs/performance_report.html)**
+   - 클릭 가능한 그래프 (확대 + 설명)
+   - FRER 네트워크 토폴로지 다이어그램
+   - 프레임 크기별 분석, 지연시간 분포
+   - UDP 손실 곡선, FRER 오버헤드 분석
+
+#### 📁 **실험 데이터 (Experimental Data)**
+**[experimental_data/](experimental_data/) 디렉토리:**
+- 📊 [Zero-Loss Threshold Data (JSON)](experimental_data/frer_zero_loss_threshold_data.json) - FRER 무손실 임계값 발견 과정
+- 📊 [RFC 2544 Comprehensive Data (JSON)](experimental_data/rfc2544_comprehensive_data.json) - 완전한 RFC 2544 벤치마크
+- 📄 [Latency Measurements (CSV)](experimental_data/latency_measurements.csv) - 지연시간 백분위수 (5개 프레임 크기)
+- 📖 [Experimental Methodology (6,000+ words)](experimental_data/EXPERIMENTAL_METHODOLOGY.md) - 테스트 절차 완전 문서화
+
+**[control_group_no_frer/](control_group_no_frer/) 디렉토리:**
+- 📊 [Control Group Data (JSON)](control_group_no_frer/control_group_data.json) - FRER 없는 대조군 실험
+- 📄 [Results Summary (Markdown)](control_group_no_frer/CONTROL_GROUP_RESULTS_SUMMARY.md) - 850줄 분석 보고서
+- 📊 CSV 파일: TCP baseline, UDP sweep, Latency measurements
+- **핵심:** Direct connection이 오히려 25% 낮은 성능!
 
 ---
 
