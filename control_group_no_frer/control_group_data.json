@@ -1,0 +1,289 @@
+{
+  "metadata": {
+    "test_date": "2025-10-23",
+    "platform": "Microchip LAN9668 (Kontron D10)",
+    "configuration": "Direct connection WITHOUT FRER",
+    "topology": "10.0.100.1 → 10.0.100.2",
+    "operator": "Automated test script",
+    "results_directory": "control_results_20251023_095238"
+  },
+
+  "tcp_baseline": {
+    "description": "TCP throughput tests at various durations",
+    "tests": [
+      {
+        "duration_s": 10,
+        "throughput_mbps": 941,
+        "retransmits": 0,
+        "sender_mbps": 943,
+        "receiver_mbps": 941,
+        "status": "perfect"
+      },
+      {
+        "duration_s": 30,
+        "throughput_mbps": 941,
+        "retransmits": 0,
+        "sender_mbps": 942,
+        "receiver_mbps": 941,
+        "status": "perfect"
+      },
+      {
+        "duration_s": 60,
+        "throughput_mbps": 941,
+        "retransmits": 0,
+        "sender_mbps": 942,
+        "receiver_mbps": 941,
+        "status": "perfect"
+      }
+    ],
+    "average_throughput_mbps": 941.0,
+    "consistency": "excellent",
+    "comparison_to_frer": {
+      "frer_throughput_mbps": 941.42,
+      "difference_mbps": -0.42,
+      "difference_pct": -0.04,
+      "conclusion": "TCP performance identical with or without FRER"
+    }
+  },
+
+  "udp_zero_loss_threshold": {
+    "description": "Finding zero-loss threshold for 1518B frames",
+    "frame_size_bytes": 1518,
+    "payload_bytes": 1472,
+    "zero_loss_threshold_mbps": 398,
+    "loss_onset_mbps": 400,
+
+    "fine_grained_sweep": [
+      {"target_mbps": 200, "achieved_mbps": 200, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 250, "achieved_mbps": 250, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 300, "achieved_mbps": 300, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 350, "achieved_mbps": 350, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 380, "achieved_mbps": 380, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 390, "achieved_mbps": 390, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 391, "achieved_mbps": 391, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 392, "achieved_mbps": 392, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 393, "achieved_mbps": 393, "loss_rate": 0.010, "status": "marginal_loss"},
+      {"target_mbps": 394, "achieved_mbps": 394, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 395, "achieved_mbps": 395, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 396, "achieved_mbps": 396, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 397, "achieved_mbps": 397, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 398, "achieved_mbps": 398, "loss_rate": 0.000, "status": "zero_loss"},
+      {"target_mbps": 399, "achieved_mbps": 399, "loss_rate": 0.0065, "status": "marginal_loss"},
+      {"target_mbps": 400, "achieved_mbps": 400, "loss_rate": 0.027, "status": "loss_onset"},
+      {"target_mbps": 450, "achieved_mbps": 450, "loss_rate": 0.010, "status": "low_loss"},
+      {"target_mbps": 480, "achieved_mbps": 480, "loss_rate": 0.024, "status": "low_loss"},
+      {"target_mbps": 500, "achieved_mbps": 499, "loss_rate": 0.250, "status": "moderate_loss"},
+      {"target_mbps": 520, "achieved_mbps": 518, "loss_rate": 0.400, "status": "moderate_loss"},
+      {"target_mbps": 530, "achieved_mbps": 527, "loss_rate": 0.500, "status": "high_loss"},
+      {"target_mbps": 540, "achieved_mbps": 537, "loss_rate": 0.520, "status": "high_loss"},
+      {"target_mbps": 560, "achieved_mbps": 557, "loss_rate": 0.450, "status": "high_loss"},
+      {"target_mbps": 580, "achieved_mbps": 578, "loss_rate": 0.410, "status": "high_loss"},
+      {"target_mbps": 600, "achieved_mbps": 595, "loss_rate": 0.870, "status": "very_high_loss"},
+      {"target_mbps": 650, "achieved_mbps": 642, "loss_rate": 1.200, "status": "very_high_loss"},
+      {"target_mbps": 700, "achieved_mbps": 691, "loss_rate": 1.200, "status": "very_high_loss"},
+      {"target_mbps": 750, "achieved_mbps": 731, "loss_rate": 2.500, "status": "catastrophic"},
+      {"target_mbps": 800, "achieved_mbps": 777, "loss_rate": 2.800, "status": "catastrophic"},
+      {"target_mbps": 850, "achieved_mbps": 830, "loss_rate": 2.400, "status": "catastrophic"},
+      {"target_mbps": 900, "achieved_mbps": 861, "loss_rate": 4.400, "status": "catastrophic"},
+      {"target_mbps": 950, "achieved_mbps": 903, "loss_rate": 4.900, "status": "catastrophic"}
+    ],
+
+    "comparison_to_frer": {
+      "control_zero_loss_mbps": 398,
+      "frer_zero_loss_mbps": 530,
+      "difference_mbps": -132,
+      "frer_advantage_pct": 33.2,
+      "conclusion": "FRER provides 33% BETTER UDP throughput - unexpected but scientifically significant"
+    }
+  },
+
+  "udp_frame_size_analysis": {
+    "description": "UDP throughput at various frame sizes",
+    "note": "All tests show packet loss - no true zero-loss threshold found except for 1518B at low rates",
+    "results": [
+      {
+        "frame_size_bytes": 64,
+        "payload_bytes": 18,
+        "test_rates_mbps": [100, 200, 300, 400],
+        "best_achieved_mbps": 93.7,
+        "loss_rate_pct": 34.0,
+        "status": "catastrophic_loss",
+        "notes": "Severe packet loss at all tested rates - TSN queuing critical for small frames"
+      },
+      {
+        "frame_size_bytes": 128,
+        "payload_bytes": 82,
+        "test_rates_mbps": [200, 300, 400, 500],
+        "best_achieved_mbps": 463,
+        "loss_rate_pct": 7.4,
+        "status": "high_loss",
+        "notes": "High loss even at moderate rates"
+      },
+      {
+        "frame_size_bytes": 256,
+        "payload_bytes": 210,
+        "test_rates_mbps": [300, 400, 500, 600],
+        "best_achieved_mbps": 582,
+        "loss_rate_pct": 3.0,
+        "status": "moderate_loss",
+        "notes": "Moderate loss across all rates"
+      },
+      {
+        "frame_size_bytes": 512,
+        "payload_bytes": 466,
+        "test_rates_mbps": [350, 450, 550],
+        "best_achieved_mbps": 525,
+        "loss_rate_pct": 4.5,
+        "status": "moderate_loss",
+        "notes": "Moderate loss"
+      },
+      {
+        "frame_size_bytes": 1024,
+        "payload_bytes": 978,
+        "test_rates_mbps": [380, 420, 450],
+        "best_achieved_mbps": 447,
+        "loss_rate_pct": 0.73,
+        "status": "low_loss",
+        "notes": "Low but non-zero loss"
+      },
+      {
+        "frame_size_bytes": 1518,
+        "payload_bytes": 1472,
+        "zero_loss_threshold_mbps": 398,
+        "best_achieved_mbps": 903,
+        "loss_rate_at_best_pct": 4.9,
+        "status": "zero_loss_achievable",
+        "notes": "Only frame size with achievable zero-loss threshold"
+      }
+    ]
+  },
+
+  "latency_measurements": {
+    "description": "sockperf ping-pong latency tests (60 seconds each)",
+    "tool": "sockperf ping-pong mode",
+    "target": "10.0.100.2:11111",
+    "results": [
+      {
+        "message_size_bytes": 64,
+        "avg_us": 53.51,
+        "std_dev_us": 16.82,
+        "min_us": null,
+        "p25_us": 46.46,
+        "p50_us": 47.30,
+        "p75_us": 49.92,
+        "p90_us": 65.35,
+        "p99_us": 122.05,
+        "p99_9_us": 171.71,
+        "p99_99_us": 241.08,
+        "p99_999_us": 331.39,
+        "observations": 556002,
+        "test_duration_sec": 60
+      },
+      {
+        "message_size_bytes": 256,
+        "avg_us": 76.85,
+        "std_dev_us": 21.27,
+        "min_us": null,
+        "p25_us": 62.87,
+        "p50_us": 73.02,
+        "p75_us": 81.57,
+        "p90_us": 111.66,
+        "p99_us": 130.49,
+        "p99_9_us": 200.47,
+        "p99_99_us": 269.17,
+        "p99_999_us": 347.06,
+        "observations": 387250,
+        "test_duration_sec": 60
+      },
+      {
+        "message_size_bytes": 512,
+        "avg_us": 82.10,
+        "std_dev_us": 27.07,
+        "min_us": null,
+        "p25_us": 61.84,
+        "p50_us": 64.13,
+        "p75_us": 105.49,
+        "p90_us": 124.51,
+        "p99_us": 150.47,
+        "p99_9_us": 217.74,
+        "p99_99_us": 290.92,
+        "p99_999_us": 356.29,
+        "observations": 362496,
+        "test_duration_sec": 60
+      },
+      {
+        "message_size_bytes": 1024,
+        "avg_us": 105.61,
+        "std_dev_us": 17.53,
+        "min_us": null,
+        "p25_us": 89.96,
+        "p50_us": 107.93,
+        "p75_us": 111.96,
+        "p90_us": 131.76,
+        "p99_us": 164.25,
+        "p99_9_us": 238.25,
+        "p99_99_us": 314.61,
+        "p99_999_us": 413.49,
+        "observations": 281790,
+        "test_duration_sec": 60
+      },
+      {
+        "message_size_bytes": 1518,
+        "avg_us": 110.19,
+        "std_dev_us": 15.89,
+        "min_us": null,
+        "p25_us": 104.05,
+        "p50_us": 105.68,
+        "p75_us": 108.77,
+        "p90_us": 117.90,
+        "p99_us": 181.51,
+        "p99_9_us": 244.95,
+        "p99_99_us": 317.81,
+        "p99_999_us": 445.49,
+        "observations": 270097,
+        "test_duration_sec": 60
+      }
+    ],
+
+    "comparison_to_frer_1518B": {
+      "control_avg_us": 110.19,
+      "frer_avg_us": 109.34,
+      "difference_us": 0.85,
+      "difference_pct": 0.8,
+      "control_p99_9_us": 244.95,
+      "frer_p99_9_us": 262.14,
+      "p99_9_difference_us": -17.19,
+      "p99_9_difference_pct": -6.6,
+      "conclusion": "Latency virtually identical - FRER has minimal impact on latency"
+    }
+  },
+
+  "scientific_conclusions": {
+    "hypothesis": "FRER overhead (2× traffic + R-TAG processing) would reduce throughput compared to direct connection",
+    "result": "REJECTED - FRER actually provides BETTER UDP throughput",
+
+    "key_findings": [
+      "TCP performance identical (941 Mbps) - flow control masks any differences",
+      "UDP zero-loss threshold: 398 Mbps (no FRER) vs 530 Mbps (FRER) = +33% with FRER",
+      "Latency virtually identical (~110 μs for 1518B frames)",
+      "Small frames (64B, 128B) show catastrophic loss without TSN queue management"
+    ],
+
+    "root_cause_analysis": {
+      "primary_factor": "TSN queue configuration, not FRER overhead",
+      "explanation": "The FRER-enabled path likely has properly configured TSN features (CBS, TAS, priority queuing) while the direct path uses standard best-effort Ethernet",
+      "evidence": [
+        "Small frames fail catastrophically without TSN (34% loss at 64B)",
+        "Zero-loss threshold 33% lower without FRER despite simpler topology",
+        "TCP unaffected (flow control provides implicit rate limiting)",
+        "Latency identical (physical propagation dominates)"
+      ]
+    },
+
+    "experimental_validity": {
+      "confounding_factor": "Different TSN configurations between control and treatment groups",
+      "recommendation": "Repeat experiment with identical TSN queue settings on both paths",
+      "conclusion": "Current results demonstrate TSN value, not pure FRER overhead"
+    }
+  }
+}

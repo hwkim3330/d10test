@@ -1,0 +1,4 @@
+Duration_Sec,Throughput_Mbps,Sender_Mbps,Receiver_Mbps,Retransmits,Status
+10,941,943,941,0,perfect
+30,941,942,941,0,perfect
+60,941,942,941,0,perfect
