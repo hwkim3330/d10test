@@ -1,15 +1,23 @@
 # FRER TSN Performance Evaluation - IEEE 802.1CB Automotive Ethernet
 
+> **🌐 GitHub Pages:** [https://hwkim3330.github.io/d10test/](https://hwkim3330.github.io/d10test/)
+>
+> **📊 Interactive Reports:**
+> - [FRER vs Control Comparison](https://hwkim3330.github.io/d10test/docs/frer_vs_control_comparison.html) ⭐ **NEW!**
+> - [Performance Report](https://hwkim3330.github.io/d10test/docs/performance_report.html)
+
+---
+
 ## 🔬 CRITICAL FINDING: FRER Provides 33% Better UDP Performance!
 
 **Breaking Discovery (2025-10-23):** Control group experiment revealed unexpected results:
 - **FRER-enabled network: 530 Mbps UDP zero-loss**
 - **Direct connection (no FRER): 398 Mbps UDP zero-loss**
-- **FRER Advantage: +33.2%** (not overhead, but improvement!)
+- **🏆 FRER Advantage: +33.2%** (not overhead, but improvement!)
 
 **Root Cause:** FRER path has properly configured TSN queue management (CBS, TAS) while direct path uses standard best-effort Ethernet.
 
-**📊 [View Comprehensive Comparison Report (HTML)](docs/frer_vs_control_comparison.html)** ← **NEW!**
+**👉 [View Interactive Comparison Report](https://hwkim3330.github.io/d10test/docs/frer_vs_control_comparison.html)** ← **Click to see live charts!**
 
 ---
 
@@ -27,13 +35,22 @@
 
 ### 📊 보고서 및 문서 (Reports & Documentation)
 
-#### 🆕 **종합 비교 보고서 (NEW!)**
-**📊 [FRER vs Control Group - Interactive Comparison (HTML)](docs/frer_vs_control_comparison.html)**
-- **Control group experiment 결과 종합**
-- FRER와 직접 연결 성능 비교 (side-by-side)
-- 인터랙티브 차트: UDP 처리량, 지연시간, 손실률
-- TSN queue 설정의 중요성 분석
-- **핵심 발견:** FRER이 33% 더 나은 UDP 성능 제공
+#### 🆕 **인터랙티브 HTML 보고서 (Interactive Reports)**
+1. **📊 [FRER vs Control Group - Comprehensive Comparison](https://hwkim3330.github.io/d10test/docs/frer_vs_control_comparison.html)** ⭐ **NEW!**
+   - **Control group experiment 결과 종합**
+   - FRER와 직접 연결 성능 비교 (side-by-side)
+   - **인터랙티브 Chart.js 차트 3개:** UDP 처리량, 지연시간, 손실률
+   - TSN queue 설정의 중요성 분석
+   - **핵심 발견:** FRER이 33% 더 나은 UDP 성능 제공
+   - 🎨 Beautiful gradient design, mobile-responsive
+   - 📄 [Source](docs/frer_vs_control_comparison.html)
+
+2. **🎨 [FRER Performance Report - Interactive Graphs](https://hwkim3330.github.io/d10test/docs/performance_report.html)**
+   - **클릭 가능한 그래프** (확대 + 상세 설명 표시)
+   - FRER 네트워크 토폴로지 다이어그램
+   - 프레임 크기별 분석, 지연시간 분포
+   - UDP 손실 곡선, FRER 오버헤드 분석
+   - 📄 [Source](docs/performance_report.html)
 
 #### 🎓 **학술 논문 (Academic Papers)**
 1. **📄 [FRER Throughput Limitations - Empirical Analysis (English)](FRER_Throughput_Limitations_Paper.md)**
@@ -48,18 +65,12 @@
    - 부하 수준별 손실률 특성 분석
    - Fail-Operational 검증 및 실무 설계 가이드
 
-#### 📊 **그래프 및 시각화**
-1. **📈 [성능 분석 그래프 상세 설명](GRAPH_EXPLANATIONS.md)**
-   - **9개 그래프 각각에 대한 완전한 설명**
-   - X축/Y축 의미, 데이터 포인트, 주요 트렌드
-   - 핵심 인사이트 및 실무 적용 방안
-   - SLA 설계, 용량 계획, 프레임 크기 선택 등 실전 예시
-
-2. **🎨 [Interactive Performance Report (HTML)](docs/performance_report.html)**
-   - 클릭 가능한 그래프 (확대 + 설명)
-   - FRER 네트워크 토폴로지 다이어그램
-   - 프레임 크기별 분석, 지연시간 분포
-   - UDP 손실 곡선, FRER 오버헤드 분석
+#### 📈 **그래프 상세 설명 (Graph Explanations)**
+**📊 [성능 분석 그래프 상세 설명 (4,800+ lines)](GRAPH_EXPLANATIONS.md)**
+- **9개 그래프 각각에 대한 완전한 설명**
+- X축/Y축 의미, 데이터 포인트, 주요 트렌드
+- 핵심 인사이트 및 실무 적용 방안
+- SLA 설계, 용량 계획, 프레임 크기 선택 등 실전 예시
 
 #### 📁 **실험 데이터 (Experimental Data)**
 **[experimental_data/](experimental_data/) 디렉토리:**
@@ -321,6 +332,27 @@ d10test/
 
 ---
 
+## 🔗 Quick Links
+
+### 🌐 **Live Interactive Reports (GitHub Pages)**
+- **[🏠 Main Page](https://hwkim3330.github.io/d10test/)** - GitHub Pages 메인
+- **[📊 FRER vs Control Comparison](https://hwkim3330.github.io/d10test/docs/frer_vs_control_comparison.html)** ⭐ **33% 성능 우위 발견!**
+- **[📈 Performance Report](https://hwkim3330.github.io/d10test/docs/performance_report.html)** - 클릭 가능한 인터랙티브 그래프
+
+### 📄 **Documentation**
+- **[FRER Throughput Limitations Paper (EN)](FRER_Throughput_Limitations_Paper.md)** - 6,200+ words
+- **[FRER TSN Performance Paper (KR)](FRER_TSN_Performance_Paper.md)** - 한글 논문
+- **[Graph Explanations](GRAPH_EXPLANATIONS.md)** - 9개 그래프 상세 설명
+- **[Experimental Methodology](experimental_data/EXPERIMENTAL_METHODOLOGY.md)** - 테스트 절차
+
+### 📊 **Experimental Data**
+- **[FRER Data (JSON)](experimental_data/frer_zero_loss_threshold_data.json)** - 530 Mbps threshold
+- **[Control Group Data (JSON)](control_group_no_frer/control_group_data.json)** - 398 Mbps threshold
+- **[RFC 2544 Results (JSON)](experimental_data/rfc2544_comprehensive_data.json)** - Complete benchmark
+- **[CSV Files](experimental_data/)** - Latency, throughput, zero-loss data
+
+---
+
 ## 📞 문의 (Contact)
 
 벤치마크 결과 또는 방법론에 대한 문의사항은 GitHub Issues를 통해 제출해 주시기 바랍니다.
@@ -329,4 +361,10 @@ d10test/
 
 **본 벤치마크는 IETF RFC 2544 표준 방법론을 준수하여 수행되었습니다.**
 
-*Last Updated: 2025-10-20*
+**Platform:** Microchip LAN9668 (Kontron D10)
+**Test Dates:** 2025-10-20 to 2025-10-23
+**Status:** ✅ Complete - All data published
+
+---
+
+**🌐 View Live Reports:** [https://hwkim3330.github.io/d10test/](https://hwkim3330.github.io/d10test/)
